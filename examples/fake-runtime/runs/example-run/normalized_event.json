@@ -1,0 +1,10 @@
+{
+  "run_id": "example-run",
+  "lane": "demo-lane",
+  "status": "complete",
+  "command": "python -m pytest examples/fake-app/tests",
+  "started_at": "2026-01-01T00:00:00Z",
+  "finished_at": "2026-01-01T00:00:03Z",
+  "artifact_kind": "sanitized-fixture"
+}
+

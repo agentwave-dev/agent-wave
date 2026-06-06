@@ -1,0 +1,12 @@
+.agent-wave/state/*.local.json
+.agent-wave/runtime/
+.codex/
+.codex-runtime/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.log
+dist/
+build/
+.DS_Store
+

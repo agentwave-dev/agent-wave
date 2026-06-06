@@ -1,0 +1,12 @@
+.codex
+.codex-runtime
+.env
+.env.*
+secrets/
+runtime/
+artifacts/raw/
+vendor/private/
+customer-data/
+*.pem
+*.key
+

@@ -1,0 +1,15 @@
+lane: demo-lane
+expected_worktree: /tmp/agent-wave-demo
+expected_branch: feature/demo-lane
+status_policy: scoped-dirty-ok
+receipt_dir: .agent-wave/receipts/demo-lane
+runtime_bridge:
+  root: .agent-wave/runtime/demo-lane
+  normalized_event: .agent-wave/runtime/demo-lane/normalized_event.json
+forbidden_paths:
+  - .codex
+  - .codex-runtime
+  - .env
+  - secrets
+  - customer-data
+

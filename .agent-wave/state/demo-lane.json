@@ -1,0 +1,13 @@
+{
+  "lane": "demo-lane",
+  "current_task": "public scaffold smoke fixture",
+  "status": "planned",
+  "last_run_id": null,
+  "last_receipt": null,
+  "runtime_bridge": {
+    "root": ".agent-wave/runtime/demo-lane",
+    "latest_normalized_event": null
+  },
+  "blockers": []
+}
+

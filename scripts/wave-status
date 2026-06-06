@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+git -C "$repo_root" status --short --branch
+
+if [ -d "$repo_root/.agent-wave/runtime" ]; then
+  find "$repo_root/.agent-wave/runtime" -name status.json -print
+else
+  echo "no runtime bridge directory"
+fi
+

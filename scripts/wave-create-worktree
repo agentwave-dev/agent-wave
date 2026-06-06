@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$#" -ne 3 ]; then
+  echo "usage: scripts/wave-create-worktree <repo> <worktree-path> <branch>" >&2
+  exit 2
+fi
+
+source_repo="$1"
+worktree_path="$2"
+branch="$3"
+
+git -C "$source_repo" worktree add -b "$branch" "$worktree_path"
+echo "created worktree $worktree_path on $branch"
+

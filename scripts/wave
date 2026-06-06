@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cmd="${1:-help}"
+
+case "$cmd" in
+  smoke)
+    test -f "$repo_root/README.md"
+    test -f "$repo_root/docs/roadmap/goals.md"
+    test -x "$repo_root/scripts/wave-run-detached"
+    echo "wave smoke: ok"
+    ;;
+  audit)
+    "$repo_root/scripts/wave-audit"
+    ;;
+  status)
+    "$repo_root/scripts/wave-status"
+    ;;
+  milestone)
+    "$repo_root/scripts/wave-audit"
+    git -C "$repo_root" status --short --branch
+    echo "milestone gate: inspect status, tests, and receipt before committing"
+    ;;
+  *)
+    echo "usage: scripts/wave {smoke|audit|status|milestone}" >&2
+    exit 2
+    ;;
+esac
+

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+patterns_file="$repo_root/templates/forbidden-paths.txt"
+
+while IFS= read -r pattern; do
+  [ -z "$pattern" ] && continue
+  case "$pattern" in
+    \#*) continue ;;
+  esac
+  normalized_pattern="${pattern%/}"
+  if find "$repo_root" -path "$repo_root/.git" -prune -o -path "$repo_root/$normalized_pattern" -print | grep -q .; then
+    echo "forbidden path matched: $pattern" >&2
+    exit 1
+  fi
+done < "$patterns_file"
+
+echo "wave audit: ok"
