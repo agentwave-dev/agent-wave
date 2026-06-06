@@ -1,0 +1,32 @@
+{
+  "trace_id": "trace-fake-app-demo-001",
+  "events": [
+    {
+      "event_id": "event-fake-app-goal-001",
+      "event_type": "goal_created",
+      "created_at": "2026-01-01T00:00:00Z",
+      "lane": "demo-lane",
+      "goal_id": "goal-demo-001",
+      "summary": "Verify fake-app baseline behavior."
+    },
+    {
+      "event_id": "event-fake-app-run-001",
+      "event_type": "receipt_written",
+      "created_at": "2026-01-01T00:05:00Z",
+      "lane": "demo-lane",
+      "goal_id": "goal-demo-001",
+      "run_id": "run-demo-001",
+      "receipt_path": "examples/fake-app/.agent-wave/completions/example-completion.md",
+      "parent_event_ids": [
+        "event-fake-app-goal-001"
+      ],
+      "artifact_paths": [
+        "/tmp/example_wave.log"
+      ],
+      "merge_gate": {
+        "status": "pending-human-review",
+        "review_path": "examples/fake-app/.agent-wave/merge-reviews/example-merge-review.md"
+      }
+    }
+  ]
+}

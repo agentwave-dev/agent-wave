@@ -1,0 +1,19 @@
+{
+  "trace_id": "trace-demo-lane-001",
+  "event_id": "event-demo-lane-001",
+  "event_type": "receipt_written",
+  "created_at": "2026-01-01T00:00:00Z",
+  "lane": "demo-lane",
+  "goal_id": "goal-demo-001",
+  "run_id": "run-demo-001",
+  "skill": "wave-run-detached",
+  "receipt_path": "examples/fake-app/.agent-wave/completions/example-completion.md",
+  "parent_event_ids": [],
+  "artifact_paths": [
+    "/tmp/example_wave.log"
+  ],
+  "merge_gate": {
+    "status": "pending-human-review",
+    "review_path": "examples/fake-app/.agent-wave/merge-reviews/example-merge-review.md"
+  }
+}

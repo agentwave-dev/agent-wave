@@ -1,0 +1,29 @@
+chain_id: demo-goal-chain
+objective: Add a small fake-app feature with tests and docs.
+lane: demo-lane
+merge_gate: human-review-required
+goals:
+  - id: goal-demo-001
+    title: Verify baseline fake-app behavior
+    skill: lane-verify
+    validation:
+      - python -m pytest examples/fake-app/tests
+    receipt_required: true
+  - id: goal-demo-002
+    title: Implement the scoped fake-app change
+    skill: wave-run-detached
+    validation:
+      - python -m pytest examples/fake-app/tests
+    receipt_required: true
+  - id: goal-demo-003
+    title: Review trace, ledger, and merge posture
+    skill: merge-review
+    validation:
+      - scripts/wave audit
+    receipt_required: true
+required_skills:
+  - lane-verify
+  - wave-run-detached
+  - completion-receipt
+  - trace-graph
+  - merge-review
