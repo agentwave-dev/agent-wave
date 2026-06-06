@@ -10,3 +10,8 @@ dist/
 build/
 .DS_Store
 
+
+# Python test/cache artifacts
+.pytest_cache/
+__pycache__/
+*.pyc
