@@ -14,6 +14,7 @@ cd CodeLanes
 ```bash
 scripts/wave smoke
 scripts/wave audit
+scripts/wave context-pack --lane demo-lane --skill token-efficient-codex-run --goal "run fake-app tests"
 python -m pytest examples/fake-app/tests
 ```
 
@@ -28,8 +29,9 @@ find docs/concepts -maxdepth 1 -type f | sort
 ## Try A Bounded Fake-App Run
 
 ```bash
-scripts/wave-run-detached demo-lane "python -m pytest examples/fake-app/tests"
+WAVE_TASK_ID=demo-lane scripts/wave-run-detached demo-lane "python -m pytest examples/fake-app/tests"
+scripts/wave peek --task demo-lane
 scripts/wave-status
 ```
 
-The detached run writes runtime output under `.agent-wave/runtime`. Treat that as local coordination state. Do not commit raw logs or private runtime artifacts.
+The detached run writes runtime output under `.agent-wave/runtime` and marker files under `/tmp`. Treat raw logs as local coordination state. `scripts/wave peek` reports active process, done marker, log size, completion JSON readiness, and narrow status lines without catting the log.

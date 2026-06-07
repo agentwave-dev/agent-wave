@@ -1,0 +1,17 @@
+{
+  "task": "<task>",
+  "lane": "<lane>",
+  "run_id": "<run-id>",
+  "status": "complete|blocked",
+  "changed_files": [],
+  "commands_run": [],
+  "tests_build_result": {
+    "status": "not_run|passed|failed",
+    "summary": ""
+  },
+  "raw_log_path": "/tmp/<task>_<timestamp>.log",
+  "blockers": [],
+  "next_recommended_action": "",
+  "commit_made": false,
+  "push_made": false
+}

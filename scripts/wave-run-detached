@@ -10,18 +10,37 @@ repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 lane="$1"
 shift
 command="$*"
-run_id="${WAVE_RUN_ID:-$(date -u +%Y%m%dT%H%M%SZ)-$lane}"
+timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
+task="${WAVE_TASK_ID:-$lane}"
+safe_task="$(printf '%s' "$task" | tr -c 'A-Za-z0-9_.-' '_')"
+run_id="${WAVE_RUN_ID:-$timestamp-$safe_task}"
 run_dir="$repo_root/.agent-wave/runtime/$lane/runs/$run_id"
+tmp_base="/tmp/${safe_task}_${timestamp}"
+run_marker="$tmp_base.run"
+log_marker="$tmp_base.log"
+done_marker="$tmp_base.done"
 mkdir -p "$run_dir"
 
 printf '%s\n' "$command" > "$run_dir/command.txt"
+{
+  printf 'TASK=%s\n' "$task"
+  printf 'ROOT=%s\n' "$repo_root"
+  printf 'PROMPT=%s\n' "$command"
+  printf 'LOG=%s\n' "$log_marker"
+  printf 'DONE=%s\n' "$done_marker"
+  printf 'STARTED_AT=%s\n' "$timestamp"
+} > "$run_marker"
 (
   set +e
-  bash -lc "$command" > "$run_dir/stdout.log" 2> "$run_dir/stderr.log"
+  bash -lc "$command" > "$log_marker" 2>&1
   code="$?"
+  cp "$log_marker" "$run_dir/stdout.log"
+  : > "$run_dir/stderr.log"
   printf '{"run_id":"%s","lane":"%s","exit_code":%s}\n' "$run_id" "$lane" "$code" > "$run_dir/status.json"
+  printf '{"run_id":"%s","lane":"%s","task":"%s","exit_code":%s,"log":"%s"}\n' "$run_id" "$lane" "$task" "$code" "$log_marker" > "$done_marker"
   exit "$code"
 ) &
 
 echo "started $run_id"
 echo "$run_dir"
+echo "$run_marker"

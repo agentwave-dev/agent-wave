@@ -10,7 +10,7 @@ CodeLanes is the operating discipline around coding agents. It gives each run a 
 
 The model is stateless. The lane is stateful.
 
-Instead of trusting chat memory or giant logs, CodeLanes makes agent work inspectable. Every agent run leaves a receipt. Every receipt belongs to a trace. Repair loops are bounded. Merge stays human-controlled.
+Instead of trusting chat memory or giant logs, CodeLanes makes agent work inspectable. Context Packs + Completion Receipts give each coding lane durable memory, bounded context, and compact receipts so agents stop burning tokens on repeated history and oversized logs. Every agent run leaves a receipt. Every receipt belongs to a trace. Repair loops are bounded. Merge stays human-controlled.
 
 ## Quickstart
 
@@ -22,6 +22,7 @@ cd CodeLanes
 
 scripts/wave smoke
 scripts/wave audit
+scripts/wave context-pack --lane demo-lane --skill token-efficient-codex-run --goal "clean up destination-domain DNS panel copy only"
 python -m pytest examples/fake-app/tests
 ```
 
@@ -37,6 +38,9 @@ cp templates/goal-chain.yaml /tmp/codelanes-demo/.agent-wave/state/demo-goal-cha
 
 - Lane verification contracts for expected worktree, branch, status, and forbidden paths.
 - State pack, receipt, trace, learning ledger, healing, and goal-chain templates.
+- Context-pack generator for lane plus skill prompts under `.agent-wave/context/`.
+- Token-efficient completion JSON and markdown receipt templates.
+- Safe `peek` command for detached run status without reading raw logs.
 - Detached run wrapper for bounded local commands.
 - Smoke and audit commands for repo-level checks.
 - Fake app fixture with pytest coverage.
@@ -49,6 +53,7 @@ cp templates/goal-chain.yaml /tmp/codelanes-demo/.agent-wave/state/demo-goal-cha
 - Wave: a coordinated set of bounded agent runs across one or more lanes.
 - Wave Crew: supervised subagents for planning, implementation, testing, docs, safety, and merge review.
 - State Pack: durable lane context for current task state, blockers, run ids, receipts, trace pointers, and runtime bridge metadata.
+- Context Pack: a generated, max-200-line prompt pack that selects one lane, one skill, one goal, allowed paths, forbidden paths, blockers, and completion requirements.
 - Trace Graph: a linked audit trail of lane events, runs, receipts, reviews, and healing attempts.
 - Learning Ledger: explicit reviewed learning, not hidden memory.
 - Completion Receipt: concise proof of what changed, what ran, and what remains.
@@ -81,7 +86,10 @@ scripts/wave smoke
 scripts/wave audit
 
 # Run a bounded task in a detached process.
-scripts/wave-run-detached demo-lane "python -m pytest examples/fake-app/tests"
+WAVE_TASK_ID=demo-lane scripts/wave-run-detached demo-lane "python -m pytest examples/fake-app/tests"
+
+# Peek safely without catting logs.
+scripts/wave peek --task demo-lane
 
 # Record proof.
 mkdir -p examples/fake-app/.agent-wave/completions examples/fake-app/.agent-wave/traces
@@ -99,6 +107,7 @@ CodeLanes is built for supervised automation, not autonomous branch integration.
 - Work happens in lanes with expected worktrees and branches.
 - State packs are small enough to inspect in a diff.
 - Detached runs write logs outside source or through a sanitized runtime artifact bridge.
+- Detached run status is inspected through marker files, log size, completion JSON readiness, and narrow status grep.
 - Completion receipts list changed files, validation commands, blockers, and merge posture.
 - Trace events connect receipts to the runs and goals that produced them.
 - Learning ledger entries are explicit, reviewed, and reversible.
@@ -118,11 +127,11 @@ Current public scaffold:
 
 Next public primitives:
 
-- v0.6 Trace Graph validation
-- v0.7 Learning Ledger promotion workflow
-- v0.8 Bounded Healing Loop enforcement
-- v0.9 Goal Chain Wave runner
-- v1.0 Autobrowse Proof and richer Merge Gates
+- v0.6 Context Packs + Completion Receipts
+- v0.7 Trace Graph validation
+- v0.8 Learning Ledger promotion workflow
+- v0.9 Bounded Healing Loop enforcement
+- v1.0 Goal Chain Wave runner, Autobrowse Proof, and richer Merge Gates
 
 See [docs/roadmap/goals.md](docs/roadmap/goals.md) for details.
 

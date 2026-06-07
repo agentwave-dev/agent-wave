@@ -6,15 +6,15 @@ AI coding agents are useful, but parallel agent work can quickly make a reposito
 
 The issue is not only model quality. The issue is missing operating structure.
 
-CodeLanes is that operating structure: a multi-agent auto-build harness for running coding agents across isolated lanes with state packs, traces, receipts, and merge gates.
+CodeLanes is that operating structure: a multi-agent auto-build harness for running coding agents across isolated lanes with state packs, context packs, traces, receipts, and merge gates.
 
 ## 2. The Core Insight: The Model Is Stateless, The Lane Is Stateful
 
 The model is stateless. The lane is stateful.
 
-A lane is a named execution track with an expected worktree, branch, status policy, state pack, skills, receipts, and merge posture. The agent can come and go, but the lane preserves the truth needed to continue safely.
+A lane is a named execution track with an expected worktree, branch, status policy, state pack, generated context pack, skills, receipts, and merge posture. The agent can come and go, but the lane preserves the truth needed to continue safely.
 
-Instead of relying on chat memory, CodeLanes keeps durable repo context in inspectable files and requires every bounded run to return proof.
+Instead of relying on chat memory, CodeLanes keeps durable repo context in inspectable files and requires every bounded run to return proof. This is the Context Packs + Completion Receipts feature: durable memory, bounded prompts, safe log peeks, and compact receipts.
 
 ## 3. CodeLanes Architecture: Lane -> State Pack -> Skill -> Detached Run -> Receipt -> Trace -> Merge Gate
 
@@ -24,7 +24,7 @@ The CodeLanes architecture is:
 lane -> state pack -> skill -> detached run -> receipt -> trace -> merge gate
 ```
 
-The lane defines where work may happen. The state pack records current truth. The skill defines the procedure. The detached run executes bounded work. The completion receipt records evidence. The trace connects the evidence. The merge gate keeps integration under human control.
+The lane defines where work may happen. The state pack records current truth. The context pack selects only the lane, skill, goal, paths, blockers, and completion requirements needed for one run. The skill defines the procedure. The detached run executes bounded work. The completion receipt records evidence. The trace connects the evidence. The merge gate keeps integration under human control.
 
 Wave remains the protocol inside CodeLanes. A wave is a coordinated set of bounded runs across one or more lanes.
 
@@ -47,31 +47,43 @@ The Trace Graph links goals, runs, receipts, artifacts, learning entries, healin
 
 Every agent run leaves a receipt. Every receipt belongs to a trace.
 
-## 6. Learning Ledger: Improvement Without Hidden Memory
+## 6. Context Packs + Completion Receipts: Token Discipline
+
+Agent runs should not repeatedly paste old project history, multi-MB logs, full diffs, or previous completion reports into every prompt. CodeLanes moves repeated context into durable state packs, then generates a compact context pack:
+
+```bash
+scripts/wave context-pack --lane demo-lane --skill token-efficient-codex-run --goal "run fake-app tests"
+```
+
+The output is `.agent-wave/context/latest_demo-lane.md`, capped at 200 lines. It includes lane state, selected skill, goal, allowed paths, forbidden paths, blockers, and completion requirements.
+
+Completion receipts are capped at 120 lines. They include changed files, commands run, tests/build result, blockers, next recommended action, and raw log path only.
+
+## 7. Learning Ledger: Improvement Without Hidden Memory
 
 CodeLanes avoids hidden learning. When a run teaches the system something reusable, the lesson goes into a Learning Ledger entry with an observation, decision, future instruction, and evidence receipt.
 
 Useful lessons can later become skills, but only after review. This keeps learning inspectable and reversible.
 
-## 7. Bounded Healing Loop: Repair Without Uncontrolled Autonomy
+## 8. Bounded Healing Loop: Repair Without Uncontrolled Autonomy
 
 Self-healing means bounded repair with receipts and human merge gates, not uncontrolled autonomy.
 
 A failed run can enter a Bounded Healing Loop. The loop classifies the failure, makes one small repair, runs validation, writes a healing receipt, and stops when the attempt budget is exhausted or the failure is resolved.
 
-## 8. Runtime Artifact Bridge: Source Edits Vs Runtime Proof
+## 9. Runtime Artifact Bridge: Source Edits Vs Runtime Proof
 
 Source edits and live runtime proof are different evidence types. A source test can show that a function behaves correctly. A browser check or HTTP response can show what a running app exposed.
 
 The Runtime Artifact Bridge gives agents a safe way to reference sanitized runtime evidence without dumping raw logs, secrets, or generated private artifacts into source.
 
-## 9. Goal Chain Waves: Turning Big Roadmap Items Into Bounded Runs
+## 10. Goal Chain Waves: Turning Big Roadmap Items Into Bounded Runs
 
 Goal Chain Waves convert large roadmap items into ordered, bounded goals. Each goal names a lane, skill, validation command, receipt requirement, and merge gate.
 
 The runner advances only when the previous goal has a receipt, trace event, and acceptable validation posture.
 
-## 10. Fake-App Walkthrough
+## 11. Fake-App Walkthrough
 
 In `examples/fake-app`, a demo wave can:
 
@@ -84,13 +96,13 @@ In `examples/fake-app`, a demo wave can:
 
 The example is intentionally generic. It demonstrates the protocol without relying on private infrastructure.
 
-## 11. Why CodeLanes Is Not Another Coding Agent
+## 12. Why CodeLanes Is Not Another Coding Agent
 
 CodeLanes is not a model and it is not another coding agent. It is the jobsite discipline around coding agents.
 
 The harness gives agents lanes, state, skills, receipts, traces, and merge gates so many agents can work in parallel without turning the repository into guesswork.
 
-## 12. Roadmap
+## 13. Roadmap
 
 The public scaffold currently covers lane harnesses, state packs, skills, Wave Crew, trace concepts, learning ledgers, healing receipts, and roadmap runner concepts.
 

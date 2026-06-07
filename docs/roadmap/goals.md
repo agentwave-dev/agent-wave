@@ -25,6 +25,10 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [x] wave-smoke skill
 - [x] wave-run-detached skill
 - [x] completion-receipt skill
+- [x] token-efficient-codex-run skill
+- [x] completion-receipt-writer skill
+- [x] log-hygiene skill
+- [x] runtime-sync-check skill
 - [x] forbidden-path-audit skill
 - [x] state-pack-update skill
 - [x] milestone-commit skill
@@ -47,7 +51,17 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [x] Completion receipts
 - [x] Merge proposal
 
-## v0.6 Trace Graph
+## v0.6 Context Packs + Completion Receipts
+
+- [x] Project state pack docs
+- [x] Expanded lane YAML context schema
+- [x] Context-pack generator command
+- [x] Compact completion JSON template
+- [x] Token-efficient markdown receipt template
+- [x] Safe detached-run peek command
+- [x] `/tmp/<task>_<timestamp>.run/.log/.done` marker pattern
+
+## v0.7 Trace Graph
 
 - [x] Trace event template
 - [x] Concept doc for run-to-receipt traceability
@@ -55,7 +69,7 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [ ] Trace validation command
 - [ ] Trace visualization export
 
-## v0.7 Learning Ledger
+## v0.8 Learning Ledger
 
 - [x] Ledger entry template
 - [x] Concept doc for explicit learning without hidden memory
@@ -63,7 +77,7 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [ ] Ledger compaction rules
 - [ ] Ledger promotion workflow for reusable skills
 
-## v0.8 Bounded Healing Loop
+## v0.9 Bounded Healing Loop
 
 - [x] Healing receipt template
 - [x] Concept doc for controlled repair
@@ -71,7 +85,7 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [ ] Attempt budget enforcement
 - [ ] Automatic blocker classification
 
-## v0.9 Goal Chain Waves
+## v1.0 Goal Chain Waves
 
 - [x] Goal chain template
 - [x] Concept doc for roadmap-to-runs planning
@@ -79,7 +93,7 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [ ] Goal chain runner command
 - [ ] Completion rollup report
 
-## v1.0 Autobrowse Proof and Merge Gates
+## v1.1 Autobrowse Proof and Merge Gates
 
 - [x] Autobrowse proof concept doc
 - [x] Merge review example

@@ -7,6 +7,7 @@ This guide walks through a generic `fake-app` lane in CodeLanes. It does not req
 ```bash
 scripts/wave smoke
 scripts/wave audit
+scripts/wave context-pack --lane demo-lane --skill token-efficient-codex-run --goal "clean up destination-domain DNS panel copy only"
 python -m pytest examples/fake-app/tests
 ```
 
@@ -31,14 +32,18 @@ Use a focused skill for each run:
 - `skills/learning-ledger/SKILL.md` for visible lessons
 - `skills/bounded-healing/SKILL.md` for limited repair attempts
 - `skills/goal-chain-planner/SKILL.md` for roadmap breakdown
+- `skills/token-efficient-codex-run/SKILL.md` for bounded context and compact receipts
+- `skills/log-hygiene/SKILL.md` for safe detached-run inspection
 
 ## 4. Run A Bounded Task
 
 ```bash
-scripts/wave-run-detached demo-lane "python -m pytest examples/fake-app/tests"
+scripts/wave context-pack --lane demo-lane --skill token-efficient-codex-run --goal "run fake-app tests"
+WAVE_TASK_ID=demo-lane scripts/wave-run-detached demo-lane "python -m pytest examples/fake-app/tests"
+scripts/wave peek --task demo-lane
 ```
 
-The run should produce a completion receipt and a trace event. If the run fails, use the bounded healing loop instead of launching unbounded retries.
+The generated context pack is written to `.agent-wave/context/latest_demo-lane.md` and should stay under 200 lines. The detached run writes `/tmp/<task>_<timestamp>.run`, `.log`, and `.done` markers. Use `scripts/wave peek` for status; do not paste raw logs into chat or receipts.
 
 ## 5. Write The Receipts
 
@@ -50,6 +55,8 @@ cp templates/learning-ledger-entry.md examples/fake-app/.agent-wave/learning/exa
 ```
 
 Every receipt should name changed files, validation commands, blockers, and merge posture. Every trace should link the goal, run, receipt, and review.
+
+For token-efficient runs, also write `reports/codex_runs/<task>/completion.json` from `templates/completion.json` and a markdown receipt from `templates/token-efficient-completion-receipt.md`. Keep the markdown receipt under 120 lines and include raw log paths only.
 
 ## 6. Review The Merge Gate
 

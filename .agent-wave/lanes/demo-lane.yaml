@@ -1,15 +1,37 @@
 lane: demo-lane
-expected_worktree: /tmp/agent-wave-demo
-expected_branch: feature/demo-lane
-status_policy: scoped-dirty-ok
-receipt_dir: .agent-wave/receipts/demo-lane
-runtime_bridge:
-  root: .agent-wave/runtime/demo-lane
-  normalized_event: .agent-wave/runtime/demo-lane/normalized_event.json
+tooling_root: .
+target_source_root: examples/fake-app
+runtime_data_root: .agent-wave/runtime/demo-lane
+branch: main
+status: ready
+current_goal: Keep the fake app lane runnable while demonstrating token-efficient context packs and compact receipts.
+allowed_paths:
+  - README.md
+  - docs/
+  - examples/fake-app/
+  - scripts/
+  - skills/
+  - templates/
+  - .agent-wave/lanes/demo-lane.yaml
+  - .agent-wave/context/
 forbidden_paths:
   - .codex
   - .codex-runtime
   - .env
+  - .env.*
   - secrets
   - customer-data
-
+  - runtime
+  - artifacts/raw
+  - vendor/private
+read_before_work:
+  - docs/project_state/README.md
+  - docs/project_state/current_build_state.md
+  - docs/project_state/token_efficiency_rules.md
+  - docs/project_state/codex_run_contract.md
+  - skills/token-efficient-codex-run/SKILL.md
+last_receipts:
+  - reports/completions/latest_codex_completion.md
+known_blockers:
+  - None
+completion_budget: 120 receipt lines, 200 context-pack lines, raw logs referenced by path only.
