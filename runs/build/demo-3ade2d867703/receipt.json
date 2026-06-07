@@ -1,0 +1,23 @@
+{
+  "blocker_classification": "none",
+  "branch": "main",
+  "changed_files": [
+    "config/",
+    "docs/build_harness/",
+    "scripts/codelanes",
+    "src/",
+    "tests/"
+  ],
+  "exit_codes": {
+    "python -m pytest examples/fake-app/tests": null
+  },
+  "goal_id": "demo-3ade2d867703",
+  "lane": "demo",
+  "next_action": "run configured validation and update receipt",
+  "patch_path": "patches/pending/demo-3ade2d867703.patch.md",
+  "tests_run": [
+    "python -m pytest examples/fake-app/tests"
+  ],
+  "workflow": "narrow_implementation",
+  "worktree": "/home/joe/public-repos/codelanes"
+}

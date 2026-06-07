@@ -1,0 +1,134 @@
+#!/usr/bin/env python3
+"""CodeLanes builder harness CLI."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+from pathlib import Path
+import sys
+
+
+PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(os.environ.get("CODELANES_ROOT", PACKAGE_ROOT)).resolve()
+sys.path.insert(0, str(PACKAGE_ROOT / "src"))
+
+from self_build.codelanes import load_lane_registry  # noqa: E402
+from self_build.context_pack import write_context_pack  # noqa: E402
+from self_build.goals import GoalSpec  # noqa: E402
+from self_build.patch_queue import create_patch_placeholder  # noqa: E402
+from self_build.receipts import write_receipt  # noqa: E402
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(prog="scripts/codelanes")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    subparsers.add_parser("smoke")
+    subparsers.add_parser("audit")
+    subparsers.add_parser("lanes")
+
+    lane_guard = subparsers.add_parser("lane-guard")
+    lane_guard.add_argument("--lane", required=True)
+
+    goal_init = subparsers.add_parser("goal-init")
+    goal_init.add_argument("--lane", required=True)
+    goal_init.add_argument("--workflow", required=True)
+    goal_init.add_argument("--objective", required=True)
+
+    context_pack = subparsers.add_parser("context-pack")
+    context_pack.add_argument("--goal-file", required=True)
+
+    receipt_init = subparsers.add_parser("receipt-init")
+    receipt_init.add_argument("--goal-file", required=True)
+
+    args = parser.parse_args(argv)
+
+    if args.command == "smoke":
+        return _smoke()
+    if args.command == "audit":
+        return _audit()
+
+    registry = load_lane_registry(REPO_ROOT / "config" / "codelanes.yml")
+
+    if args.command == "lanes":
+        print(json.dumps(registry.to_dict(), indent=2, sort_keys=True))
+        return 0
+
+    if args.command == "lane-guard":
+        result = registry.guard(args.lane)
+        print(json.dumps(result.to_dict(), indent=2, sort_keys=True))
+        return 0 if result.ok else 1
+
+    if args.command == "goal-init":
+        lane = registry.get(args.lane)
+        goal = GoalSpec.create(
+            lane=args.lane,
+            workflow=args.workflow,
+            objective=args.objective,
+            allowed_paths=lane.owns,
+            forbidden_paths=lane.forbidden,
+            test_commands=lane.default_tests,
+        )
+        path = goal.write_json(goal.default_path(REPO_ROOT))
+        print(path.relative_to(REPO_ROOT))
+        return 0
+
+    if args.command == "context-pack":
+        goal = GoalSpec.read_json(_resolve(args.goal_file))
+        lane = registry.get(goal.lane)
+        path = write_context_pack(goal, lane, root=REPO_ROOT)
+        print(path.relative_to(REPO_ROOT))
+        return 0
+
+    if args.command == "receipt-init":
+        goal = GoalSpec.read_json(_resolve(args.goal_file))
+        receipt_path = write_receipt(goal, root=REPO_ROOT)
+        patch_path = create_patch_placeholder(goal, root=REPO_ROOT)
+        print(json.dumps({"receipt": str(receipt_path.relative_to(REPO_ROOT)), "patch": str(patch_path.relative_to(REPO_ROOT))}, indent=2, sort_keys=True))
+        return 0
+
+    parser.error(f"unsupported command: {args.command}")
+    return 2
+
+
+def _smoke() -> int:
+    required = [
+        "README.md",
+        "config/codelanes.yml",
+        "docs/build_harness/codelanes_builder_architecture.md",
+        "src/self_build/codelanes.py",
+    ]
+    missing = [path for path in required if not (REPO_ROOT / path).exists()]
+    if missing:
+        print(f"codelanes smoke: missing {', '.join(missing)}", file=sys.stderr)
+        return 1
+    load_lane_registry(REPO_ROOT / "config" / "codelanes.yml")
+    print("codelanes smoke: ok")
+    return 0
+
+
+def _audit() -> int:
+    registry = load_lane_registry(REPO_ROOT / "config" / "codelanes.yml")
+    for lane_id in registry.ids():
+        lane = registry.get(lane_id)
+        if not lane.forbidden:
+            print(f"codelanes audit: lane {lane_id} has no forbidden paths", file=sys.stderr)
+            return 1
+        if not lane.proof_roots:
+            print(f"codelanes audit: lane {lane_id} has no proof roots", file=sys.stderr)
+            return 1
+    print("codelanes audit: ok")
+    return 0
+
+
+def _resolve(path: str) -> Path:
+    candidate = Path(path)
+    if candidate.is_absolute():
+        return candidate
+    return REPO_ROOT / candidate
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

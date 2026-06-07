@@ -1,0 +1,102 @@
+lanes:
+  demo:
+    source_root: /repo
+    runtime_data_root: /runtime
+    expected_branch: main
+    tmux_session: codelanes-demo
+    owns:
+      - examples/fake-app
+      - runs/build
+      - reports/completions
+    forbidden:
+      - .env
+      - secrets
+      - private
+      - runtime/production
+    proof_roots:
+      - runs/build
+      - reports/completions
+    default_tests:
+      - python -m pytest examples/fake-app/tests
+  docs:
+    source_root: /repo
+    runtime_data_root: /runtime
+    expected_branch: main
+    tmux_session: codelanes-docs
+    owns:
+      - docs
+      - reports/completions
+    forbidden:
+      - .env
+      - secrets
+      - private
+      - runtime/production
+    proof_roots:
+      - reports/completions
+    default_tests:
+      - scripts/codelanes audit
+  webapp:
+    source_root: /repo/examples/fake-app
+    runtime_data_root: /runtime/examples/fake-app
+    expected_branch: main
+    tmux_session: codelanes-webapp
+    owns:
+      - examples/fake-app
+      - runs/build
+    forbidden:
+      - .env
+      - secrets
+      - private
+      - runtime/production
+    proof_roots:
+      - runs/build
+      - reports/completions
+    default_tests:
+      - python -m pytest examples/fake-app/tests
+  integration:
+    source_root: /repo
+    runtime_data_root: /runtime
+    expected_branch: main
+    tmux_session: codelanes-integration
+    owns:
+      - patches
+      - reports/completions
+      - runs/build
+    forbidden:
+      - .env
+      - secrets
+      - private
+      - runtime/production
+    proof_roots:
+      - patches/pending
+      - reports/completions
+      - runs/build
+    default_tests:
+      - scripts/codelanes audit
+  builder:
+    source_root: /repo
+    runtime_data_root: /runtime
+    expected_branch: main
+    tmux_session: codelanes-builder
+    owns:
+      - config/codelanes.yml
+      - docs/build_harness
+      - scripts/codelanes
+      - src/self_build
+      - tests
+      - runs/build
+      - patches/pending
+      - reports/completions
+    forbidden:
+      - .env
+      - secrets
+      - private
+      - runtime/production
+    proof_roots:
+      - runs/build
+      - patches/pending
+      - reports/completions
+    default_tests:
+      - scripts/codelanes smoke
+      - scripts/codelanes audit
+      - python -m pytest tests/test_codelanes_builder_harness.py
