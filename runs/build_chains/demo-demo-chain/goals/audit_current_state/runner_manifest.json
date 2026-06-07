@@ -1,0 +1,16 @@
+{
+  "context_pack_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-chain/goals/audit_current_state/context_pack.md",
+  "expected_branch": "main",
+  "goal_id": "audit_current_state",
+  "lane": "demo",
+  "max_repair_attempts": 1,
+  "mode": "dry-run",
+  "next_action": "review context pack before launching any future worker",
+  "source_root": "/repo",
+  "test_commands": [
+    "python -m pytest examples/fake-app/tests"
+  ],
+  "tmux_session": "codelanes-demo",
+  "worker_launch": "disabled",
+  "workflow": "audit"
+}

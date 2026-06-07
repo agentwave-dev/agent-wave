@@ -15,10 +15,11 @@ def write_context_pack(
     lane: Lane,
     *,
     root: str | Path = ".",
+    output_dir: str | Path | None = None,
     max_chars: int = 12000,
     max_lines: int = 180,
 ) -> Path:
-    out_dir = Path(root) / "runs" / "build" / goal.goal_id
+    out_dir = Path(output_dir) if output_dir is not None else Path(root) / "runs" / "build" / goal.goal_id
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "context_pack.md"
 
@@ -61,7 +62,7 @@ def write_context_pack(
 
     bounded = _bounded_lines(lines, max_chars=max_chars, max_lines=max_lines)
     out_path.write_text("\n".join(bounded) + "\n", encoding="utf-8")
-    write_runner_manifest(goal, lane, root=root, context_pack_path=out_path)
+    write_runner_manifest(goal, lane, root=root, output_dir=out_dir, context_pack_path=out_path)
     return out_path
 
 
@@ -70,9 +71,10 @@ def write_runner_manifest(
     lane: Lane,
     *,
     root: str | Path = ".",
+    output_dir: str | Path | None = None,
     context_pack_path: str | Path,
 ) -> Path:
-    out_dir = Path(root) / "runs" / "build" / goal.goal_id
+    out_dir = Path(output_dir) if output_dir is not None else Path(root) / "runs" / "build" / goal.goal_id
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "runner_manifest.json"
     manifest: dict[str, Any] = {

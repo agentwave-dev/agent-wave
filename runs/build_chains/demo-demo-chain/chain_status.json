@@ -1,0 +1,34 @@
+{
+  "blockers": [],
+  "chain_id": "demo-demo-chain",
+  "execution_mode": "sequential",
+  "goal_count": 3,
+  "goals": [
+    {
+      "blocker": "pending",
+      "depends_on": [],
+      "goal_id": "audit_current_state",
+      "receipt": "incomplete"
+    },
+    {
+      "blocker": "pending",
+      "depends_on": [
+        "audit_current_state"
+      ],
+      "goal_id": "implement_small_change",
+      "receipt": "incomplete"
+    },
+    {
+      "blocker": "pending",
+      "depends_on": [
+        "implement_small_change"
+      ],
+      "goal_id": "validate_and_receipt",
+      "receipt": "incomplete"
+    }
+  ],
+  "next_incomplete_goal": "audit_current_state",
+  "title": "Demo chain",
+  "updated_at": "2026-06-07T17:59:10Z",
+  "worker_launch": "disabled"
+}

@@ -100,6 +100,16 @@ cp templates/trace-event.json examples/fake-app/.agent-wave/traces/example-wave-
 scripts/wave milestone
 ```
 
+## Goal Chains
+
+Goal Chains split one larger objective into ordered child GoalSpecs, then materialize child `goal.json`, `context_pack.md`, `receipt.json`, `chain_status.json`, and `chain_completion.md` artifacts. The MVP is sequential and does not launch workers or apply patches.
+
+```bash
+scripts/codelanes goal-chain-init --lane demo --title "Demo chain" --objective "Make one small validated fake-app improvement"
+scripts/codelanes goal-chain-materialize --chain-file runs/build_chains/demo-demo-chain/chain.json
+scripts/codelanes goal-chain-status --chain-file runs/build_chains/demo-demo-chain
+```
+
 ## Safety Model
 
 CodeLanes is built for supervised automation, not autonomous branch integration.

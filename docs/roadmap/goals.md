@@ -61,6 +61,27 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [x] Safe detached-run peek command
 - [x] `/tmp/<task>_<timestamp>.run/.log/.done` marker pattern
 
+## Builder Harness MVP
+
+- [x] Lane registry
+- [x] Lane guard
+- [x] GoalSpec init
+- [x] Context pack from goal file
+- [x] Receipt init
+- [x] Patch placeholder
+- [x] Builder harness tests
+
+## Goal Chain MVP
+
+- [x] Sequential chain init command
+- [x] Chain materialization into child GoalSpecs
+- [x] Child context packs and receipt stubs
+- [x] Chain status artifact
+- [x] Chain completion artifact
+- [ ] Worker launch integration
+- [ ] Parallel waves
+- [ ] Repair loop integration
+
 ## v0.7 Trace Graph
 
 - [x] Trace event template

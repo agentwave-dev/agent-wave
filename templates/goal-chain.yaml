@@ -1,29 +1,87 @@
-chain_id: demo-goal-chain
-objective: Add a small fake-app feature with tests and docs.
-lane: demo-lane
-merge_gate: human-review-required
+chain_id: demo_sequential_chain
+title: Demo Sequential Goal Chain
+objective: Make one small validated improvement to the fake app.
+lane: demo
+default_workflow: narrow_implementation
 goals:
-  - id: goal-demo-001
-    title: Verify baseline fake-app behavior
-    skill: lane-verify
-    validation:
+  - goal_id: audit_current_state
+    title: Audit current state
+    objective: Inspect the current fake-app behavior, constraints, and tests.
+    workflow: audit
+    lane: demo
+    depends_on:
+    allowed_paths:
+      - examples/fake-app
+      - runs/build_chains
+      - reports/completions
+    forbidden_paths:
+      - .env
+      - secrets
+      - private
+      - runtime/production
+    acceptance_criteria:
+      - Current state and constraints are identified.
+      - No implementation changes are made during audit.
+    test_commands:
       - python -m pytest examples/fake-app/tests
-    receipt_required: true
-  - id: goal-demo-002
-    title: Implement the scoped fake-app change
-    skill: wave-run-detached
-    validation:
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - Wrong worktree or branch.
+      - Forbidden path or private data would be touched.
+  - goal_id: implement_small_change
+    title: Implement small change
+    objective: Implement one bounded fake-app change after audit.
+    workflow: narrow_implementation
+    lane: demo
+    depends_on:
+      - audit_current_state
+    allowed_paths:
+      - examples/fake-app
+      - runs/build_chains
+      - reports/completions
+    forbidden_paths:
+      - .env
+      - secrets
+      - private
+      - runtime/production
+    acceptance_criteria:
+      - The scoped change is implemented.
+      - No patches are applied automatically by the chain.
+    test_commands:
       - python -m pytest examples/fake-app/tests
-    receipt_required: true
-  - id: goal-demo-003
-    title: Review trace, ledger, and merge posture
-    skill: merge-review
-    validation:
-      - scripts/wave audit
-    receipt_required: true
-required_skills:
-  - lane-verify
-  - wave-run-detached
-  - completion-receipt
-  - trace-graph
-  - merge-review
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.
+  - goal_id: validate_and_receipt
+    title: Validate and receipt
+    objective: Run validation and summarize the chain proof.
+    workflow: validation
+    lane: demo
+    depends_on:
+      - implement_small_change
+    allowed_paths:
+      - examples/fake-app
+      - runs/build_chains
+      - reports/completions
+    forbidden_paths:
+      - .env
+      - secrets
+      - private
+      - runtime/production
+    acceptance_criteria:
+      - Configured tests pass or blockers are documented.
+      - Chain status and completion artifacts are present.
+    test_commands:
+      - python -m pytest examples/fake-app/tests
+    proof_required:
+      - context_pack.md
+      - receipt.json
+      - chain_completion.md
+    stop_conditions:
+      - Validation fails without a documented blocker.
+      - Receipt proof is missing.
