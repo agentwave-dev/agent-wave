@@ -1,6 +1,6 @@
 # Trace Graph
 
-The Trace Graph is the audit trail for Agent Wave.
+The Trace Graph is the audit trail for CodeLanes.
 
 Every agent run leaves a receipt. Every receipt belongs to a trace. A trace connects the goal, lane, skill, detached run, receipt, learning entry, healing attempt, browser proof, and merge review.
 

@@ -1,6 +1,6 @@
 # Contributing
 
-Agent Wave favors small, inspectable changes with explicit evidence.
+CodeLanes favors small, inspectable changes with explicit evidence.
 
 ## Local Flow
 
@@ -13,4 +13,3 @@ Agent Wave favors small, inspectable changes with explicit evidence.
 7. Use the milestone commit gate before committing locally.
 
 Do not add private product data, real runtime exports, credentials, or generated logs from unrelated systems.
-

@@ -1,20 +1,24 @@
-# Agent Wave
+# CodeLanes
 
-Agent Wave is a multi-agent auto-build harness for running many AI coding agents across separate worktrees and tasks simultaneously without losing state, mixing branches, or drowning in logs.
+CodeLanes is a multi-agent auto-build harness for running many AI coding agents across isolated lanes and tasks simultaneously without losing state, mixing branches, or drowning in logs.
+
+Run many coding agents at once without repo chaos.
 
 ## 30-Second Pitch
 
-Run many AI coding agents at once without repo chaos.
+CodeLanes is the operating discipline around coding agents. It gives each run a lane, state pack, skill, detached process, completion receipt, trace, and merge gate before work starts.
 
-Agent Wave gives coding agents a jobsite: lanes, state, skills, receipts, and merge gates. The model is stateless. The lane is stateful. Each lane names the expected worktree, branch, task, state pack, skill set, detached run, completion receipt, trace, and merge posture before work starts.
+The model is stateless. The lane is stateful.
 
-Every agent run leaves a receipt. Every receipt belongs to a trace. Self-healing means bounded repair with receipts and human merge gates, not uncontrolled autonomy.
+Instead of trusting chat memory or giant logs, CodeLanes makes agent work inspectable. Every agent run leaves a receipt. Every receipt belongs to a trace. Repair loops are bounded. Merge stays human-controlled.
 
 ## Quickstart
 
+From the repo root:
+
 ```bash
-git clone https://github.com/agentwave-dev/agent-wave.git
-cd agent-wave
+git clone https://github.com/agentwave-dev/CodeLanes.git
+cd CodeLanes
 
 scripts/wave smoke
 scripts/wave audit
@@ -24,27 +28,34 @@ python -m pytest examples/fake-app/tests
 Create a demo lane:
 
 ```bash
-mkdir -p /repo/fake-app/.agent-wave/lanes /repo/fake-app/.agent-wave/state
-cp templates/state-pack.yaml /repo/fake-app/.agent-wave/lanes/demo-lane.yaml
-cp templates/goal-chain.yaml /repo/fake-app/.agent-wave/state/demo-goal-chain.yaml
+mkdir -p /tmp/codelanes-demo/.agent-wave/lanes /tmp/codelanes-demo/.agent-wave/state
+cp templates/state-pack.yaml /tmp/codelanes-demo/.agent-wave/lanes/demo-lane.yaml
+cp templates/goal-chain.yaml /tmp/codelanes-demo/.agent-wave/state/demo-goal-chain.yaml
 ```
+
+## What Works Today
+
+- Lane verification contracts for expected worktree, branch, status, and forbidden paths.
+- State pack, receipt, trace, learning ledger, healing, and goal-chain templates.
+- Detached run wrapper for bounded local commands.
+- Smoke and audit commands for repo-level checks.
+- Fake app fixture with pytest coverage.
+- Public concept docs for Wave Crew, Trace Graph, Learning Ledger, Bounded Healing Loop, Goal Chain Waves, and runtime proof.
 
 ## Core Concepts
 
-- Lanes: named execution tracks with an expected worktree, branch, status policy, and guardrails.
-- State Packs: durable lane memory for current task state, blockers, run ids, receipts, trace pointers, and runtime bridge metadata.
-- Skills: local, versioned operating procedures that teach agents how to perform repeatable work.
-- Detached Runs: background agent or shell runs that can continue without chat scrollback.
-- Completion Receipts: explicit evidence that a run reached a stopping point.
-- Trace Graph: a linked audit trail of lane events, runs, receipts, reviews, and healing attempts.
-- Learning Ledger: a visible record of lessons learned without hidden memory.
-- Bounded Healing Loop: limited repair attempts that produce receipts and stop at a merge gate.
-- Merge Gates: human-controlled checkpoints before source changes enter the main branch.
+- CodeLanes: the product and repo, an auto-build harness around coding agents.
+- Lane: an isolated workstream with an expected worktree, branch, task, state, and merge posture.
+- Wave: a coordinated set of bounded agent runs across one or more lanes.
 - Wave Crew: supervised subagents for planning, implementation, testing, docs, safety, and merge review.
-- Goal Chain Waves: roadmap runners that break large objectives into small bounded runs.
-- Autobrowse Proof: browser or HTTP evidence attached to a receipt when UI/runtime behavior matters.
+- State Pack: durable lane context for current task state, blockers, run ids, receipts, trace pointers, and runtime bridge metadata.
+- Trace Graph: a linked audit trail of lane events, runs, receipts, reviews, and healing attempts.
+- Learning Ledger: explicit reviewed learning, not hidden memory.
+- Completion Receipt: concise proof of what changed, what ran, and what remains.
+- Bounded Healing Loop: controlled repair with attempt limits, receipts, and merge gates.
+- Merge Gate: a human-controlled checkpoint before integration.
 
-## Wave Flow
+## Flow
 
 ```text
 roadmap goal
@@ -65,14 +76,15 @@ lane -> state pack -> skill -> detached run -> completion receipt
 ## Example Command Flow
 
 ```bash
-# Verify the lane before starting work.
+# Verify the repo and lane harness.
 scripts/wave smoke
 scripts/wave audit
 
 # Run a bounded task in a detached process.
 scripts/wave-run-detached demo-lane "python -m pytest examples/fake-app/tests"
 
-# Record the result.
+# Record proof.
+mkdir -p examples/fake-app/.agent-wave/completions examples/fake-app/.agent-wave/traces
 cp templates/completion-receipt.md examples/fake-app/.agent-wave/completions/example-completion.md
 cp templates/trace-event.json examples/fake-app/.agent-wave/traces/example-wave-trace.json
 
@@ -82,13 +94,14 @@ scripts/wave milestone
 
 ## Safety Model
 
-Agent Wave is built around explicit state and human-controlled gates.
+CodeLanes is built for supervised automation, not autonomous branch integration.
 
 - Work happens in lanes with expected worktrees and branches.
 - State packs are small enough to inspect in a diff.
 - Detached runs write logs outside source or through a sanitized runtime artifact bridge.
 - Completion receipts list changed files, validation commands, blockers, and merge posture.
 - Trace events connect receipts to the runs and goals that produced them.
+- Learning ledger entries are explicit, reviewed, and reversible.
 - Healing loops have attempt limits and stop with a receipt.
 - Merge gates require review before branch integration.
 - Forbidden-path audits keep private paths, secrets, raw logs, and generated runtime sprawl out of public artifacts.
@@ -105,17 +118,21 @@ Current public scaffold:
 
 Next public primitives:
 
-- v0.6 Trace Graph
-- v0.7 Learning Ledger
-- v0.8 Bounded Healing Loop
-- v0.9 Goal Chain Waves
-- v1.0 Autobrowse Proof and Merge Gates
+- v0.6 Trace Graph validation
+- v0.7 Learning Ledger promotion workflow
+- v0.8 Bounded Healing Loop enforcement
+- v0.9 Goal Chain Wave runner
+- v1.0 Autobrowse Proof and richer Merge Gates
 
 See [docs/roadmap/goals.md](docs/roadmap/goals.md) for details.
 
 ## Learn More
 
-- [Agent Wave Protocol](docs/concepts/agent-wave-protocol.md)
+- [Technical Introduction](docs/articles/codelanes-technical-introduction.md)
+- [Launch Thread](docs/articles/x-launch-thread.md)
+- [Positioning](docs/articles/positioning.md)
+- [Clone and Run](docs/guides/clone-and-run.md)
+- [Wave Protocol Inside CodeLanes](docs/concepts/agent-wave-protocol.md)
 - [State Packs](docs/concepts/state-packs.md)
 - [Wave Crew](docs/concepts/wave-crew.md)
 - [Trace Graph](docs/concepts/trace-graph.md)
@@ -123,8 +140,11 @@ See [docs/roadmap/goals.md](docs/roadmap/goals.md) for details.
 - [Bounded Healing Loop](docs/concepts/bounded-healing-loop.md)
 - [Goal Chain Waves](docs/concepts/goal-chain-waves.md)
 - [Autobrowse Proof](docs/concepts/autobrowse-proof.md)
-- [Technical Introduction](docs/articles/agent-wave-technical-introduction.md)
 
 ## Contributing
 
 Contributions are welcome when they preserve the core contract: stateful lanes, auditable receipts, bounded repair, and human merge gates. Good first contributions include clearer templates, additional generic examples, new skills, and validation scripts that improve safety without coupling the project to private infrastructure.
+
+GitHub: https://github.com/agentwave-dev/CodeLanes
+
+X: @getcodelanes

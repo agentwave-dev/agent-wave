@@ -1,8 +1,8 @@
-# Agent Wave Protocol
+# Wave Protocol Inside CodeLanes
 
-The Agent Wave protocol is a small operating contract for supervised multi-agent work.
+Wave remains the protocol inside CodeLanes. It is a small operating contract for supervised multi-agent work across isolated lanes.
 
-Agent Wave assumes the model is stateless and the lane is stateful. The protocol keeps durable state in files, not in chat scrollback.
+CodeLanes assumes the model is stateless and the lane is stateful. The protocol keeps durable state in files, not in chat scrollback.
 
 ## Protocol Chain
 

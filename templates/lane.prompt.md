@@ -2,7 +2,7 @@
 
 LANE: demo-lane
 EXPECTED_BRANCH: feature/demo-lane
-EXPECTED_WORKTREE: /tmp/agent-wave-demo
+EXPECTED_WORKTREE: /tmp/codelanes-demo
 
 TASK
 Make a scoped change, run tests, write a completion receipt, and stop before merge.
@@ -13,4 +13,3 @@ RULES
 - Use fake data only.
 - Run available tests.
 - Write a completion receipt.
-

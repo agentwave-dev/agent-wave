@@ -1,6 +1,6 @@
 # Bounded Healing Loop
 
-The Bounded Healing Loop is Agent Wave's repair model for failed runs.
+The Bounded Healing Loop is CodeLanes' repair model for failed runs.
 
 Self-healing means bounded repair with receipts and human merge gates, not uncontrolled autonomy.
 

@@ -1,5 +1,5 @@
 lane: demo-lane
-expected_worktree: /tmp/agent-wave-demo
+expected_worktree: /tmp/codelanes-demo
 expected_branch: feature/demo-lane
 status_policy: scoped-dirty-ok
 runtime_bridge:
@@ -13,4 +13,3 @@ forbidden_paths:
   - .env
   - secrets
   - runtime
-

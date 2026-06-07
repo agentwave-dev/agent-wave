@@ -1,6 +1,6 @@
-# Agent Wave Roadmap
+# CodeLanes Roadmap
 
-Agent Wave is organized around small public primitives that can be composed into larger multi-agent waves.
+CodeLanes is organized around small public primitives that can be composed into larger multi-agent waves. Wave remains the protocol inside CodeLanes.
 
 ## v0.1 Lane Harness
 
@@ -66,7 +66,7 @@ Agent Wave is organized around small public primitives that can be composed into
 ## v0.8 Bounded Healing Loop
 
 - [x] Healing receipt template
-- [x] Concept doc for safe self-healing
+- [x] Concept doc for controlled repair
 - [x] Fake app healing receipt example
 - [ ] Attempt budget enforcement
 - [ ] Automatic blocker classification
