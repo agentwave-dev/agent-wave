@@ -1,0 +1,374 @@
+chain_id: webbuilder-publish-mvp
+title: Webbuilder Publish MVP
+objective: Load the final Webbuilder manifesto as a sequential publish-MVP goal chain without editing the real Webbuilder source repo.
+lane: webbuilder
+default_workflow: narrow_implementation
+goals:
+  - goal_id: goal_0_runtime_safety_checkpoint
+    title: Goal 0 - Runtime safety checkpoint
+    objective: Prove hospio-site.service is stable and existing routes still work; do not expand Webbuilder product scope.
+    workflow: audit
+    lane: webbuilder
+    depends_on: []
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - hospio-site.service stability evidence is captured without product expansion.
+      - Existing route checks are recorded with compact command results.
+      - No DNS, publish, or payment changes are made.
+      - No source edit occurs outside the Webbuilder lane.
+      - Runtime proof separates live status from source-build proof.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - Service restart is allowed only if this runtime safety goal explicitly documents operator approval.
+      - Wrong worktree or branch.
+      - Forbidden path or private data would be touched.
+  - goal_id: goal_1_published_site_resolver_skeleton
+    title: Goal 1 - Published-site resolver skeleton
+    objective: Add domain_mapping plus site/site_version fixture and a host-based resolver for fake local subdomain tests.
+    workflow: narrow_implementation
+    lane: webbuilder
+    depends_on:
+      - goal_0_runtime_safety_checkpoint
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - domain_mapping and site/site_version fixtures exist.
+      - Local tests use fake {site_slug}.hospio.ai host input.
+      - Host-based resolver maps host to persisted active site version.
+      - Guest-facing homepage renders from persisted version.
+      - No Webbuilder source edit occurs before Goal 0 receipt exists.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - No service restart unless a runtime safety goal explicitly allows it.
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.
+  - goal_id: goal_2_project_backed_preview
+    title: Goal 2 - Project-backed preview
+    objective: Convert preview from query-only to project/session-backed while keeping query import as bootstrap only.
+    workflow: narrow_implementation
+    lane: webbuilder
+    depends_on:
+      - goal_1_published_site_resolver_skeleton
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - Preview state is backed by project/session persistence.
+      - Query import remains only as a bootstrap path.
+      - Preview continues to show blockers and setup state.
+      - Existing preview behavior is covered by focused tests.
+      - Receipt records migration boundaries and remaining blockers.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - No service restart unless a runtime safety goal explicitly allows it.
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.
+  - goal_id: goal_3_publish_readiness_model
+    title: Goal 3 - Publish readiness model
+    objective: Add readiness checks that block publish correctly, without Hostaway import or custom domain work.
+    workflow: narrow_implementation
+    lane: webbuilder
+    depends_on:
+      - goal_2_project_backed_preview
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - Publish readiness model exists with explicit checks.
+      - Publish is blocked when readiness fails.
+      - No Hostaway import is added in this goal.
+      - No custom domain support is added in this goal.
+      - Tests prove blocking and ready states.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - No service restart unless a runtime safety goal explicitly allows it.
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.
+  - goal_id: goal_4_hostaway_connection_validation_listing_import
+    title: Goal 4 - Hostaway validation and listing import
+    objective: Add credential_ref validation, listing import, and listing pages while ensuring raw API keys never render or serialize.
+    workflow: narrow_implementation
+    lane: webbuilder
+    depends_on:
+      - goal_3_publish_readiness_model
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - credential_ref is stored instead of raw API key values.
+      - Connection validation succeeds and fails with compact safe errors.
+      - Listing import persists tenant-scoped listing data.
+      - Listing pages render imported data.
+      - Raw API key never renders, serializes, logs, or appears in receipts.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - No service restart unless a runtime safety goal explicitly allows it.
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.
+  - goal_id: goal_5_generated_subdomain_publish
+    title: Goal 5 - Generated subdomain publish
+    objective: Make generated {site_slug}.hospio.ai hosts resolve to site_id and active_version_id, with no custom domains yet.
+    workflow: narrow_implementation
+    lane: webbuilder
+    depends_on:
+      - goal_4_hostaway_connection_validation_listing_import
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - Publish assigns generated subdomain metadata.
+      - Generated host resolves to site_id.
+      - Generated host resolves to active_version_id.
+      - Custom domain code path remains absent.
+      - Tests cover generated subdomain routing.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - No service restart unless a runtime safety goal explicitly allows it.
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.
+  - goal_id: goal_6_tenant_generic_search_detail_quote
+    title: Goal 6 - Tenant-generic search/detail/quote
+    objective: Implement search to stays to detail to quote using tenant-scoped Hostaway data, without real live charges.
+    workflow: narrow_implementation
+    lane: webbuilder
+    depends_on:
+      - goal_5_generated_subdomain_publish
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - Search uses tenant-scoped imported data.
+      - Stays and detail pages remain tenant-generic.
+      - Quote flow uses tenant-scoped data.
+      - No real live charges can be made.
+      - Tests cover tenant isolation across the flow.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - No service restart unless a runtime safety goal explicitly allows it.
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.
+  - goal_id: goal_7_stripe_sandbox_checkout_attempt
+    title: Goal 7 - Stripe sandbox checkout attempt
+    objective: Create hosted tenant checkout sandbox session only when Stripe sandbox connection and routing profile are valid; keep live mode disabled.
+    workflow: narrow_implementation
+    lane: webbuilder
+    depends_on:
+      - goal_6_tenant_generic_search_detail_quote
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - Sandbox checkout session is created only with valid sandbox connection.
+      - Routing profile is required before session creation.
+      - Live mode is disabled and covered by tests.
+      - Direct-booking checkout code is not touched.
+      - Receipt proves no real charges path was enabled.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - No service restart unless a runtime safety goal explicitly allows it.
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.
+  - goal_id: goal_8_custom_domain_mapping
+    title: Goal 8 - Custom domain mapping
+    objective: Add DNS instruction artifact, verification status, SSL readiness, and activation lifecycle after generated subdomains work.
+    workflow: narrow_implementation
+    lane: webbuilder
+    depends_on:
+      - goal_7_stripe_sandbox_checkout_attempt
+    allowed_paths:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden_paths:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    acceptance_criteria:
+      - DNS instruction artifact is generated for operators.
+      - Verification status model exists.
+      - SSL readiness state is represented.
+      - Activation lifecycle is explicit and reversible.
+      - No automatic DNS mutation is implemented.
+    test_commands:
+      - npm run build
+      - npm test
+    proof_required:
+      - context_pack.md
+      - receipt.json
+    stop_conditions:
+      - "expected_worktree: /home/joe/worktrees/wander-webbuilder"
+      - "runtime_data_root: /home/joe/apps"
+      - Direct source edits should happen only in the webbuilder lane.
+      - /home/joe/apps is read-only unless deploy/sync is explicitly approved.
+      - No service restart unless a runtime safety goal explicitly allows it.
+      - Dependency receipt has a blocker.
+      - Forbidden path or private data would be touched.

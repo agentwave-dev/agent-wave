@@ -1,0 +1,138 @@
+{
+  "blocked_count": 0,
+  "blockers": [],
+  "chain_id": "webbuilder-publish-mvp",
+  "complete_count": 0,
+  "execution_mode": "sequential",
+  "goal_count": 9,
+  "goals": [
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_0_runtime_safety_checkpoint/context_pack.md",
+      "depends_on": [],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_0_runtime_safety_checkpoint",
+      "goal_id": "goal_0_runtime_safety_checkpoint",
+      "objective": "Prove hospio-site.service is stable and existing routes still work; do not expand Webbuilder product scope.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_0_runtime_safety_checkpoint/receipt.json",
+      "title": "Goal 0 - Runtime safety checkpoint"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_1_published_site_resolver_skeleton/context_pack.md",
+      "depends_on": [
+        "goal_0_runtime_safety_checkpoint"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_1_published_site_resolver_skeleton",
+      "goal_id": "goal_1_published_site_resolver_skeleton",
+      "objective": "Add domain_mapping plus site/site_version fixture and a host-based resolver for fake local subdomain tests.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_1_published_site_resolver_skeleton/receipt.json",
+      "title": "Goal 1 - Published-site resolver skeleton"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_2_project_backed_preview/context_pack.md",
+      "depends_on": [
+        "goal_1_published_site_resolver_skeleton"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_2_project_backed_preview",
+      "goal_id": "goal_2_project_backed_preview",
+      "objective": "Convert preview from query-only to project/session-backed while keeping query import as bootstrap only.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_2_project_backed_preview/receipt.json",
+      "title": "Goal 2 - Project-backed preview"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_3_publish_readiness_model/context_pack.md",
+      "depends_on": [
+        "goal_2_project_backed_preview"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_3_publish_readiness_model",
+      "goal_id": "goal_3_publish_readiness_model",
+      "objective": "Add readiness checks that block publish correctly, without Hostaway import or custom domain work.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_3_publish_readiness_model/receipt.json",
+      "title": "Goal 3 - Publish readiness model"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_4_hostaway_connection_validation_listing_import/context_pack.md",
+      "depends_on": [
+        "goal_3_publish_readiness_model"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_4_hostaway_connection_validation_listing_import",
+      "goal_id": "goal_4_hostaway_connection_validation_listing_import",
+      "objective": "Add credential_ref validation, listing import, and listing pages while ensuring raw API keys never render or serialize.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_4_hostaway_connection_validation_listing_import/receipt.json",
+      "title": "Goal 4 - Hostaway validation and listing import"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_5_generated_subdomain_publish/context_pack.md",
+      "depends_on": [
+        "goal_4_hostaway_connection_validation_listing_import"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_5_generated_subdomain_publish",
+      "goal_id": "goal_5_generated_subdomain_publish",
+      "objective": "Make generated {site_slug}.hospio.ai hosts resolve to site_id and active_version_id, with no custom domains yet.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_5_generated_subdomain_publish/receipt.json",
+      "title": "Goal 5 - Generated subdomain publish"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_6_tenant_generic_search_detail_quote/context_pack.md",
+      "depends_on": [
+        "goal_5_generated_subdomain_publish"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_6_tenant_generic_search_detail_quote",
+      "goal_id": "goal_6_tenant_generic_search_detail_quote",
+      "objective": "Implement search to stays to detail to quote using tenant-scoped Hostaway data, without real live charges.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_6_tenant_generic_search_detail_quote/receipt.json",
+      "title": "Goal 6 - Tenant-generic search/detail/quote"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_7_stripe_sandbox_checkout_attempt/context_pack.md",
+      "depends_on": [
+        "goal_6_tenant_generic_search_detail_quote"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_7_stripe_sandbox_checkout_attempt",
+      "goal_id": "goal_7_stripe_sandbox_checkout_attempt",
+      "objective": "Create hosted tenant checkout sandbox session only when Stripe sandbox connection and routing profile are valid; keep live mode disabled.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_7_stripe_sandbox_checkout_attempt/receipt.json",
+      "title": "Goal 7 - Stripe sandbox checkout attempt"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_8_custom_domain_mapping/context_pack.md",
+      "depends_on": [
+        "goal_7_stripe_sandbox_checkout_attempt"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_8_custom_domain_mapping",
+      "goal_id": "goal_8_custom_domain_mapping",
+      "objective": "Add DNS instruction artifact, verification status, SSL readiness, and activation lifecycle after generated subdomains work.",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_8_custom_domain_mapping/receipt.json",
+      "title": "Goal 8 - Custom domain mapping"
+    }
+  ],
+  "next_incomplete": {
+    "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_0_runtime_safety_checkpoint/context_pack.md",
+    "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_0_runtime_safety_checkpoint",
+    "goal_id": "goal_0_runtime_safety_checkpoint",
+    "objective": "Prove hospio-site.service is stable and existing routes still work; do not expand Webbuilder product scope.",
+    "receipt": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_0_runtime_safety_checkpoint/receipt.json",
+    "title": "Goal 0 - Runtime safety checkpoint"
+  },
+  "next_incomplete_goal": "goal_0_runtime_safety_checkpoint",
+  "pending_count": 9,
+  "title": "Webbuilder Publish MVP",
+  "updated_at": "2026-06-08T02:50:36Z",
+  "worker_launch": "disabled"
+}

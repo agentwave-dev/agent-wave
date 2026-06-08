@@ -104,6 +104,8 @@ scripts/wave milestone
 
 Goal Chains split one larger objective into ordered child GoalSpecs, then materialize child `goal.json`, `context_pack.md`, `receipt.json`, `chain_status.json`, and `chain_completion.md` artifacts. The MVP is sequential and does not apply patches or launch swarms.
 
+The first real project chain is Webbuilder Publish MVP, loaded from the final Webbuilder manifesto at `runs/build_chains/webbuilder-publish-mvp`. It is planning-only in this repo: worker launch is disabled, context packs stay compact, and source edits belong to the separate Webbuilder lane.
+
 ```bash
 scripts/codelanes goal-chain-init --lane demo --title "Demo chain" --objective "Make one small validated fake-app improvement"
 scripts/codelanes goal-chain-materialize --chain-file runs/build_chains/demo-demo-chain/chain.json

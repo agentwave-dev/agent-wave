@@ -86,6 +86,7 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [x] Bounded repair loop docs scaffold
 - [x] Supervised worker launcher dry-run plan/run/peek/collect
 - [x] Two-part worker execution gate
+- [x] Webbuilder Publish MVP loaded as first real project chain
 - [ ] Parallel waves
 - [ ] Repair loop integration
 
@@ -104,6 +105,8 @@ scripts/codelanes worker-collect --goal-dir runs/build_chains/demo-demo-chain/go
 ```
 
 Current limitation: worker launch is single-goal and supervised. Dry-run is default, execution requires `--execute` plus `CODELANES_ENABLE_WORKER_EXEC=1`, and patch application, integration apply mode, repair execution, parallel workers, and swarms remain out of scope.
+
+First real project chain: `runs/build_chains/webbuilder-publish-mvp` materializes the final Webbuilder manifesto into nine sequential child goals. Legacy Webbuilder goals are superseded unless a later receipt revalidates them.
 
 ## v0.7 Trace Graph
 

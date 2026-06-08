@@ -1,0 +1,27 @@
+{
+  "blocker_classification": "pending",
+  "branch": "main",
+  "changed_files": [
+    "README.md",
+    "config/codelanes.yml",
+    "docs/roadmap/goals.md",
+    "tests/test_codelanes_builder_harness.py",
+    "docs/build_harness/webbuilder_first_project.md",
+    "runs/build_chains/webbuilder-publish-mvp/",
+    "templates/webbuilder-goal-chain.yaml"
+  ],
+  "exit_codes": {
+    "npm run build": null,
+    "npm test": null
+  },
+  "goal_id": "goal_2_project_backed_preview",
+  "lane": "webbuilder",
+  "next_action": "complete this child goal manually, then update receipt",
+  "patch_path": "/home/joe/public-repos/codelanes/runs/build_chains/webbuilder-publish-mvp/goals/goal_2_project_backed_preview/patch_placeholder_disabled.md",
+  "tests_run": [
+    "npm run build",
+    "npm test"
+  ],
+  "workflow": "narrow_implementation",
+  "worktree": "/home/joe/public-repos/codelanes"
+}

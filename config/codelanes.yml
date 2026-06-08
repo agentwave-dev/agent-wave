@@ -100,3 +100,28 @@ lanes:
       - scripts/codelanes smoke
       - scripts/codelanes audit
       - python -m pytest tests/test_codelanes_builder_harness.py
+  webbuilder:
+    source_root: /home/joe/worktrees/wander-webbuilder
+    runtime_data_root: /home/joe/apps
+    expected_branch: main
+    tmux_session: codelanes-webbuilder
+    owns:
+      - /home/joe/worktrees/wander-webbuilder
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    forbidden:
+      - /stay routes
+      - checkout implementation owned by direct booking
+      - direct-booking Stripe code
+      - Hostaway live reservation writes
+      - private CRM mutation
+      - reports/direct_booking
+      - raw secrets or .env edits
+      - production DNS mutation
+      - custom domain automation before generated subdomains work
+    proof_roots:
+      - runs/build_chains/webbuilder-publish-mvp
+      - reports/completions
+    default_tests:
+      - npm run build
+      - npm test

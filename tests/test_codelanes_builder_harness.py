@@ -17,7 +17,7 @@ from self_build.receipts import BuildReceipt
 
 def test_loads_codelanes_yml():
     registry = load_lane_registry(ROOT / "config" / "codelanes.yml")
-    assert {"demo", "docs", "webapp", "integration", "builder"} == set(registry.ids())
+    assert {"demo", "docs", "webapp", "integration", "builder", "webbuilder"} == set(registry.ids())
     assert registry.get("demo").source_root == "/repo"
 
 
