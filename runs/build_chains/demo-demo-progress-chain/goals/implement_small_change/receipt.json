@@ -1,0 +1,26 @@
+{
+  "blocker_classification": "pending",
+  "branch": "main",
+  "changed_files": [
+    "README.md",
+    "docs/build_harness/goal_chains.md",
+    "docs/roadmap/goals.md",
+    "scripts/codelanes",
+    "src/self_build/goal_chains.py",
+    "src/self_build/receipts.py",
+    "tests/test_codelanes_goal_chains.py",
+    "runs/build_chains/demo-demo-progress-chain/"
+  ],
+  "exit_codes": {
+    "python -m pytest examples/fake-app/tests": null
+  },
+  "goal_id": "implement_small_change",
+  "lane": "demo",
+  "next_action": "complete this child goal manually, then update receipt",
+  "patch_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain/goals/implement_small_change/patch_placeholder_disabled.md",
+  "tests_run": [
+    "python -m pytest examples/fake-app/tests"
+  ],
+  "workflow": "narrow_implementation",
+  "worktree": "/home/joe/public-repos/codelanes"
+}

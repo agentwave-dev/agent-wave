@@ -16,6 +16,52 @@ chain.yaml
 
 The chain does not launch Codex workers, apply patches, merge branches, or retry repairs automatically. It only writes bounded artifacts that a human or future supervised runner can review.
 
+## Command Flow
+
+Initialize a sequential chain:
+
+```bash
+scripts/codelanes goal-chain-init --lane demo --title "Demo chain" --objective "Make one small validated fake-app improvement"
+```
+
+Materialize child goals and receipt stubs:
+
+```bash
+scripts/codelanes goal-chain-materialize --chain-file runs/build_chains/demo-demo-chain/chain.json
+```
+
+Mark a child goal complete after manual work and validation:
+
+```bash
+scripts/codelanes goal-receipt-update \
+  --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state \
+  --status complete \
+  --tests-result passed \
+  --command "python -m pytest examples/fake-app/tests" \
+  --changed-file "examples/fake-app/README.md" \
+  --next-action "Proceed to next child goal"
+```
+
+Refresh chain rollups from child receipts:
+
+```bash
+scripts/codelanes goal-chain-refresh --chain-file runs/build_chains/demo-demo-chain
+```
+
+Get the next incomplete child goal:
+
+```bash
+scripts/codelanes goal-chain-next --chain-file runs/build_chains/demo-demo-chain
+```
+
+Review compact chain status:
+
+```bash
+scripts/codelanes goal-chain-status --chain-file runs/build_chains/demo-demo-chain
+```
+
+The MVP still has no worker launch integration. Child goals are completed manually, then receipts are updated explicitly.
+
 ## When To Use A Goal Chain
 
 Use a Goal Chain when one objective is too large for a single GoalSpec but still has a clear sequential path. Good fits include:

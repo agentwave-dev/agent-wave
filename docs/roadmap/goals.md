@@ -78,9 +78,24 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [x] Child context packs and receipt stubs
 - [x] Chain status artifact
 - [x] Chain completion artifact
+- [x] Receipt update command for child progress
+- [x] Chain refresh command for status and completion rollups
+- [x] Chain next command for the next incomplete child goal
 - [ ] Worker launch integration
 - [ ] Parallel waves
 - [ ] Repair loop integration
+
+Progress flow:
+
+```bash
+scripts/codelanes goal-chain-init --lane demo --title "Demo chain" --objective "Make one small validated fake-app improvement"
+scripts/codelanes goal-chain-materialize --chain-file runs/build_chains/demo-demo-chain/chain.json
+scripts/codelanes goal-receipt-update --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state --status complete --tests-result passed --command "python -m pytest examples/fake-app/tests" --next-action "Proceed to next child goal"
+scripts/codelanes goal-chain-refresh --chain-file runs/build_chains/demo-demo-chain
+scripts/codelanes goal-chain-next --chain-file runs/build_chains/demo-demo-chain
+```
+
+Current limitation: no worker launch integration yet. A human or supervised future runner must complete each child goal and update its receipt.
 
 ## v0.7 Trace Graph
 

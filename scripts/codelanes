@@ -16,10 +16,10 @@ sys.path.insert(0, str(PACKAGE_ROOT / "src"))
 
 from self_build.codelanes import load_lane_registry  # noqa: E402
 from self_build.context_pack import write_context_pack  # noqa: E402
-from self_build.goal_chains import compact_status, create_minimal_chain, materialize_chain  # noqa: E402
+from self_build.goal_chains import compact_next, compact_status, create_minimal_chain, materialize_chain, refresh_chain  # noqa: E402
 from self_build.goals import GoalSpec  # noqa: E402
 from self_build.patch_queue import create_patch_placeholder  # noqa: E402
-from self_build.receipts import write_receipt  # noqa: E402
+from self_build.receipts import update_receipt, write_receipt  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -44,6 +44,15 @@ def main(argv: list[str] | None = None) -> int:
     receipt_init = subparsers.add_parser("receipt-init")
     receipt_init.add_argument("--goal-file", required=True)
 
+    receipt_update = subparsers.add_parser("goal-receipt-update")
+    receipt_update.add_argument("--goal-dir", required=True)
+    receipt_update.add_argument("--status", choices=["complete", "blocked"])
+    receipt_update.add_argument("--tests-result", choices=["passed", "failed", "not_run"])
+    receipt_update.add_argument("--command", action="append", default=[], dest="receipt_commands")
+    receipt_update.add_argument("--changed-file", action="append", default=[])
+    receipt_update.add_argument("--blocker", action="append", default=[])
+    receipt_update.add_argument("--next-action")
+
     chain_init = subparsers.add_parser("goal-chain-init")
     chain_init.add_argument("--lane", required=True)
     chain_init.add_argument("--title", required=True)
@@ -54,6 +63,12 @@ def main(argv: list[str] | None = None) -> int:
 
     chain_status = subparsers.add_parser("goal-chain-status")
     chain_status.add_argument("--chain-file", required=True)
+
+    chain_refresh = subparsers.add_parser("goal-chain-refresh")
+    chain_refresh.add_argument("--chain-file", required=True)
+
+    chain_next = subparsers.add_parser("goal-chain-next")
+    chain_next.add_argument("--chain-file", required=True)
 
     args = parser.parse_args(argv)
 
@@ -101,6 +116,19 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps({"receipt": str(receipt_path.relative_to(REPO_ROOT)), "patch": str(patch_path.relative_to(REPO_ROOT))}, indent=2, sort_keys=True))
         return 0
 
+    if args.command == "goal-receipt-update":
+        receipt_path = update_receipt(
+            _resolve(args.goal_dir),
+            status=args.status,
+            tests_result=args.tests_result,
+            commands=args.receipt_commands,
+            changed_files=args.changed_file,
+            blockers=args.blocker,
+            next_action=args.next_action,
+        )
+        print(receipt_path.relative_to(REPO_ROOT))
+        return 0
+
     if args.command == "goal-chain-init":
         path = create_minimal_chain(
             lane=args.lane,
@@ -119,6 +147,15 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "goal-chain-status":
         print(compact_status(_resolve(args.chain_file)))
+        return 0
+
+    if args.command == "goal-chain-refresh":
+        chain_dir = refresh_chain(_resolve(args.chain_file))
+        print(chain_dir.relative_to(REPO_ROOT))
+        return 0
+
+    if args.command == "goal-chain-next":
+        print(compact_next(_resolve(args.chain_file)))
         return 0
 
     parser.error(f"unsupported command: {args.command}")

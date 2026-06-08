@@ -254,34 +254,71 @@ def materialize_chain(chain_file: str | Path, *, registry: LaneRegistry, root: s
     return chain_dir
 
 
+def refresh_chain(chain_file_or_dir: str | Path) -> Path:
+    chain_dir = _chain_dir(chain_file_or_dir)
+    write_chain_status(chain_dir)
+    write_chain_completion(chain_dir)
+    return chain_dir
+
+
 def write_chain_status(chain_dir: str | Path) -> Path:
     directory = Path(chain_dir)
     chain = json.loads((directory / "chain.json").read_text(encoding="utf-8"))
     goals_status = []
     blockers: list[str] = []
-    next_incomplete: str | None = None
+    next_incomplete: dict[str, Any] | None = None
+    counts = {"complete": 0, "blocked": 0, "pending": 0}
 
     for goal in chain["goals"]:
         goal_id = goal["goal_id"]
         receipt_path = directory / "goals" / goal_id / "receipt.json"
-        receipt_status = "missing"
+        context_pack_path = directory / "goals" / goal_id / "context_pack.md"
+        receipt_status = "pending"
         blocker = "receipt missing"
         if receipt_path.exists():
             receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-            blocker = str(receipt.get("blocker_classification", "unknown"))
-            exit_codes = receipt.get("exit_codes", {})
-            if blocker == "none" and isinstance(exit_codes, dict) and all(code == 0 for code in exit_codes.values()):
-                receipt_status = "complete"
+            blocker_classification = str(receipt.get("blocker_classification", "unknown"))
+            blocker_items = receipt.get("blockers")
+            blocker_list = [str(item) for item in blocker_items if str(item).strip()] if isinstance(blocker_items, list) else []
+            blocker = "; ".join(blocker_list) if blocker_list else blocker_classification
+            explicit_status = receipt.get("status")
+            if explicit_status in {"complete", "blocked"}:
+                receipt_status = str(explicit_status)
+            elif blocker_classification == "blocked" or blocker_list:
+                receipt_status = "blocked"
             else:
-                receipt_status = "incomplete"
+                exit_codes = receipt.get("exit_codes", {})
+                tests_result = receipt.get("tests_build_result")
+                if (
+                    blocker_classification == "none"
+                    and tests_result == "passed"
+                    and isinstance(exit_codes, dict)
+                    and all(code == 0 for code in exit_codes.values())
+                ):
+                    receipt_status = "complete"
+            if receipt_status == "complete":
+                blocker = "none"
+        counts[receipt_status] += 1
         if receipt_status != "complete" and next_incomplete is None:
-            next_incomplete = goal_id
-        if blocker not in ("none", "pending"):
+            next_incomplete = {
+                "goal_id": goal_id,
+                "title": goal.get("title", ""),
+                "objective": goal.get("objective", ""),
+                "goal_dir": str(directory / "goals" / goal_id),
+                "context_pack": str(context_pack_path),
+                "receipt": str(receipt_path),
+            }
+        if receipt_status == "blocked" or blocker not in ("none", "pending"):
             blockers.append(f"{goal_id}: {blocker}")
         goals_status.append(
             {
                 "goal_id": goal_id,
+                "title": goal.get("title", ""),
+                "objective": goal.get("objective", ""),
                 "depends_on": goal.get("depends_on", []),
+                "goal_dir": str(directory / "goals" / goal_id),
+                "context_pack": str(context_pack_path),
+                "receipt_path": str(receipt_path),
                 "receipt": receipt_status,
                 "blocker": blocker,
             }
@@ -293,9 +330,13 @@ def write_chain_status(chain_dir: str | Path) -> Path:
         "execution_mode": "sequential",
         "worker_launch": "disabled",
         "goal_count": len(chain["goals"]),
+        "complete_count": counts["complete"],
+        "blocked_count": counts["blocked"],
+        "pending_count": counts["pending"],
         "goals": goals_status,
         "blockers": blockers,
-        "next_incomplete_goal": next_incomplete,
+        "next_incomplete_goal": next_incomplete["goal_id"] if next_incomplete else None,
+        "next_incomplete": next_incomplete,
         "updated_at": _now(),
     }
     out = directory / "chain_status.json"
@@ -312,6 +353,9 @@ def write_chain_completion(chain_dir: str | Path) -> Path:
         f"- Execution mode: {status['execution_mode']}",
         f"- Worker launch: {status['worker_launch']}",
         f"- Goal count: {status['goal_count']}",
+        f"- Complete: {status['complete_count']}",
+        f"- Blocked: {status['blocked_count']}",
+        f"- Pending: {status['pending_count']}",
         f"- Next incomplete goal: {status['next_incomplete_goal'] or 'none'}",
         f"- Blockers: {', '.join(status['blockers']) if status['blockers'] else 'none'}",
         "",
@@ -331,7 +375,10 @@ def compact_status(chain_file_or_dir: str | Path) -> str:
     status = json.loads(status_path.read_text(encoding="utf-8"))
     lines = [
         f"chain id: {status['chain_id']}",
-        f"goal count: {status['goal_count']}",
+        f"total goals: {status['goal_count']}",
+        f"complete: {status['complete_count']}",
+        f"blocked: {status['blocked_count']}",
+        f"pending: {status['pending_count']}",
         "receipt status:",
     ]
     for goal in status["goals"]:
@@ -339,6 +386,26 @@ def compact_status(chain_file_or_dir: str | Path) -> str:
     lines.append(f"blockers: {', '.join(status['blockers']) if status['blockers'] else 'none'}")
     lines.append(f"next incomplete goal: {status['next_incomplete_goal'] or 'none'}")
     return "\n".join(lines)
+
+
+def compact_next(chain_file_or_dir: str | Path) -> str:
+    chain_dir = _chain_dir(chain_file_or_dir)
+    status_path = write_chain_status(chain_dir)
+    status = json.loads(status_path.read_text(encoding="utf-8"))
+    next_goal = status.get("next_incomplete")
+    if not next_goal:
+        return f"chain_id: {status['chain_id']}\ncomplete: true"
+    return "\n".join(
+        [
+            f"chain_id: {status['chain_id']}",
+            f"next_goal_id: {next_goal['goal_id']}",
+            f"title: {next_goal['title']}",
+            f"objective: {next_goal['objective']}",
+            f"goal_dir: {next_goal['goal_dir']}",
+            f"context_pack: {next_goal['context_pack']}",
+            f"receipt: {next_goal['receipt']}",
+        ]
+    )
 
 
 def _chain_dir(path: str | Path) -> Path:

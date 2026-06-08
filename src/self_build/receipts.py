@@ -88,6 +88,77 @@ def write_receipt(goal: GoalSpec, *, root: str | Path = ".") -> Path:
     return receipt.write_json(receipt.default_path(root))
 
 
+def update_receipt(
+    goal_dir: str | Path,
+    *,
+    status: str | None = None,
+    tests_result: str | None = None,
+    commands: list[str] | None = None,
+    changed_files: list[str] | None = None,
+    blockers: list[str] | None = None,
+    next_action: str | None = None,
+) -> Path:
+    if status is not None and status not in {"complete", "blocked"}:
+        raise ValueError("status must be complete or blocked")
+    if tests_result is not None and tests_result not in {"passed", "failed", "not_run"}:
+        raise ValueError("tests_result must be passed, failed, or not_run")
+
+    receipt_path = Path(goal_dir) / "receipt.json"
+    data = json.loads(receipt_path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("receipt JSON must be an object")
+
+    if status is not None:
+        data["status"] = status
+        data["blocker_classification"] = "none" if status == "complete" else "blocked"
+    if tests_result is not None:
+        data["tests_build_result"] = tests_result
+    elif status == "complete" and "tests_build_result" not in data:
+        data["tests_build_result"] = "not_run"
+
+    if commands:
+        existing = _string_list(data.get("commands_run") or data.get("tests_run") or [])
+        data["commands_run"] = _append_unique(existing, commands)
+        data["tests_run"] = _append_unique(_string_list(data.get("tests_run") or []), commands)
+        exit_codes = data.get("exit_codes")
+        if not isinstance(exit_codes, dict):
+            exit_codes = {}
+        default_code = 0 if data.get("tests_build_result") == "passed" else None
+        for command in commands:
+            exit_codes.setdefault(command, default_code)
+        data["exit_codes"] = exit_codes
+
+    if changed_files:
+        data["changed_files"] = _append_unique(_string_list(data.get("changed_files") or []), changed_files)
+
+    if blockers:
+        data["blockers"] = _append_unique(_string_list(data.get("blockers") or []), blockers)
+        data["blocker_classification"] = "blocked"
+
+    if next_action is not None:
+        data["next_recommended_action"] = next_action
+        data["next_action"] = next_action
+
+    receipt_path.write_text(json.dumps(data, separators=(",", ":"), sort_keys=True) + "\n", encoding="utf-8")
+    return receipt_path
+
+
+def _append_unique(existing: list[str], additions: list[str]) -> list[str]:
+    result = list(existing)
+    seen = set(result)
+    for item in additions:
+        if item not in seen:
+            result.append(item)
+            seen.add(item)
+    return result
+
+
+def _string_list(value: Any) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, str)]
+
+
 def _current_branch(cwd: Path) -> str:
     result = subprocess.run(
         ["git", "branch", "--show-current"],

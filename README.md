@@ -107,8 +107,13 @@ Goal Chains split one larger objective into ordered child GoalSpecs, then materi
 ```bash
 scripts/codelanes goal-chain-init --lane demo --title "Demo chain" --objective "Make one small validated fake-app improvement"
 scripts/codelanes goal-chain-materialize --chain-file runs/build_chains/demo-demo-chain/chain.json
+scripts/codelanes goal-chain-next --chain-file runs/build_chains/demo-demo-chain
+scripts/codelanes goal-receipt-update --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state --status complete --tests-result passed --command "python -m pytest examples/fake-app/tests" --changed-file "examples/fake-app/README.md" --next-action "Proceed to next child goal"
+scripts/codelanes goal-chain-refresh --chain-file runs/build_chains/demo-demo-chain
 scripts/codelanes goal-chain-status --chain-file runs/build_chains/demo-demo-chain
 ```
+
+Goal Chain progress is receipt-driven. The MVP records and refreshes child progress, but it does not launch workers, apply patches, or merge branches.
 
 ## Safety Model
 
