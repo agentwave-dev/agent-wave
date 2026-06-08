@@ -46,6 +46,31 @@ cp templates/goal-chain.yaml /tmp/codelanes-demo/.agent-wave/state/demo-goal-cha
 - Fake app fixture with pytest coverage.
 - Public concept docs for Wave Crew, Trace Graph, Learning Ledger, Bounded Healing Loop, Goal Chain Waves, and runtime proof.
 
+## Implemented MVP
+
+The current CodeLanes MVP is a supervised builder harness, not an autonomous agent platform. These primitives are implemented in the public CLI:
+
+- Repo checks: `scripts/codelanes smoke`, `scripts/codelanes audit`, and `scripts/codelanes lanes`.
+- Lane setup and guardrails: `lane-guard`, `goal-init`, `context-pack`, and `receipt-init`.
+- Context Packs + Completion Receipts for compact prompts and inspectable proof.
+- Builder Harness MVP artifacts for goals, context packs, receipts, and runner manifests.
+- Sequential Goal Chains with `goal-chain-init`, `goal-chain-materialize`, `goal-chain-status`, `goal-chain-refresh`, `goal-chain-next`, and `goal-receipt-update`.
+- Goal Chain Progress from child receipts into chain status and completion rollups.
+- Session Contract fields in worker runner manifests.
+- CommandResult-style compact command observations.
+- Supervised Worker Launcher MVP with `worker-plan`, `worker-run`, `worker-peek`, and `worker-collect`.
+- Webbuilder Publish MVP as the first real project chain at `runs/build_chains/webbuilder-publish-mvp`.
+
+## Still Scaffolded / Not Implemented Yet
+
+These are intentionally not implemented as automatic behavior in the current MVP:
+
+- No swarms.
+- No automatic patch application.
+- No integration apply mode.
+- No repair execution.
+- No autonomous execution.
+
 ## Core Concepts
 
 - CodeLanes: the product and repo, an auto-build harness around coding agents.
@@ -154,21 +179,29 @@ CodeLanes is built for supervised automation, not autonomous branch integration.
 
 ## Roadmap
 
-Current public scaffold:
+Completed public primitives:
 
 - v0.1 Lane Harness
 - v0.2 State Packs
 - v0.3 Skill Library
 - v0.4 Wave Crew
 - v0.5 Auto-Build Roadmap Runner
+- v0.6 Context Packs + Completion Receipts
+- Builder Harness MVP
+- Sequential Goal Chains + Goal Chain Progress
+- Session Contract + CommandResult
+- Supervised Worker Launcher MVP
+- Webbuilder Publish MVP as the first real project chain
 
 Next public primitives:
 
-- v0.6 Context Packs + Completion Receipts
-- v0.7 Trace Graph validation
-- v0.8 Learning Ledger promotion workflow
-- v0.9 Bounded Healing Loop enforcement
-- v1.0 Goal Chain Wave runner, Autobrowse Proof, and richer Merge Gates
+1. Integration Gate MVP
+2. Bounded Repair Execution MVP
+3. Live codex-builder port
+4. First Webbuilder Goal 0 dry-run
+5. Reviewer subagent as a read-only tool
+
+Swarms are deferred.
 
 See [docs/roadmap/goals.md](docs/roadmap/goals.md) for details.
 

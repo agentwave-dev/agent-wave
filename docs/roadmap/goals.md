@@ -1,6 +1,18 @@
 # CodeLanes Roadmap
 
-CodeLanes is organized around small public primitives that can be composed into larger multi-agent waves. Wave remains the protocol inside CodeLanes.
+CodeLanes is organized around small public primitives for supervised coding-agent work. Wave remains protocol terminology inside CodeLanes; CodeLanes is the product name.
+
+## Current Implemented MVP
+
+- [x] Context Packs + Completion Receipts
+- [x] Builder Harness MVP
+- [x] Sequential Goal Chains
+- [x] Goal Chain Progress
+- [x] Session Contract
+- [x] CommandResult
+- [x] Supervised Worker Launcher MVP
+- [x] Bounded Repair Loop scaffold only
+- [x] Webbuilder Publish MVP as the first real project chain
 
 ## v0.1 Lane Harness
 
@@ -87,8 +99,6 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [x] Supervised worker launcher dry-run plan/run/peek/collect
 - [x] Two-part worker execution gate
 - [x] Webbuilder Publish MVP loaded as first real project chain
-- [ ] Parallel waves
-- [ ] Repair loop integration
 
 Progress flow:
 
@@ -107,6 +117,22 @@ scripts/codelanes worker-collect --goal-dir runs/build_chains/demo-demo-chain/go
 Current limitation: worker launch is single-goal and supervised. Dry-run is default, execution requires `--execute` plus `CODELANES_ENABLE_WORKER_EXEC=1`, and patch application, integration apply mode, repair execution, parallel workers, and swarms remain out of scope.
 
 First real project chain: `runs/build_chains/webbuilder-publish-mvp` materializes the final Webbuilder manifesto into nine sequential child goals. Legacy Webbuilder goals are superseded unless a later receipt revalidates them.
+
+## Current Next Items
+
+1. [ ] Integration Gate MVP
+2. [ ] Bounded Repair Execution MVP
+3. [ ] Live codex-builder port
+4. [ ] First Webbuilder Goal 0 dry-run
+5. [ ] Reviewer subagent as a read-only tool, later
+
+## Deferred
+
+- [ ] Swarms
+- [ ] Parallel waves
+- [ ] Autonomous execution
+- [ ] Automatic patch application
+- [ ] Integration apply mode
 
 ## v0.7 Trace Graph
 
