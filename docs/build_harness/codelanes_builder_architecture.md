@@ -44,6 +44,28 @@ The MVP flow is:
 
 This chain makes build state inspectable without requiring a live worker swarm.
 
+## Goal Chain Progress
+
+Goal Chain progress is receipt-driven. `goal-receipt-update` updates a child receipt with compact status, validation result, commands run, changed files, blockers, and next action. `goal-chain-refresh` rebuilds `chain_status.json` and `chain_completion.md` from child receipts. `goal-chain-next` prints the next incomplete child goal without dumping raw logs.
+
+## Session Contract
+
+The runner manifest now embeds a session contract. The contract records mode, lane, worktree, branch, model, approval policy, allowed tools, context budget, artifact paths, and resume source. Plan and review modes are read-only by contract; worker and repair modes are still only declarations until a supervised launcher exists.
+
+See [session_contract.md](session_contract.md).
+
+## CommandResult
+
+New builder commands can use `CommandResult` as a structured observation: summary, artifacts, next actions, optional recovery hint, and optional raw output path. The future worker loop should consume these results and inspect artifacts instead of parsing terminal logs.
+
+See [command_results.md](command_results.md).
+
+## Bounded Repair Scaffold
+
+Repair is documented but not executable in this milestone. The scaffold defines failed receipt classification, bounded repair goals, repair receipts, parent receipt updates, and chain refresh with max attempts and no raw log copying.
+
+See [bounded_repair_loop.md](bounded_repair_loop.md).
+
 ## No-Swarm MVP Boundary
 
 MVP v0 does not launch Codex workers, create swarms, run detached agents, apply patches, or mutate production runtime data. It only creates durable input and output artifacts for one supervised build run:

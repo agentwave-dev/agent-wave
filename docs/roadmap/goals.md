@@ -81,6 +81,9 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [x] Receipt update command for child progress
 - [x] Chain refresh command for status and completion rollups
 - [x] Chain next command for the next incomplete child goal
+- [x] Session contract embedded in runner manifests
+- [x] Structured CommandResult helper contract
+- [x] Bounded repair loop docs scaffold
 - [ ] Worker launch integration
 - [ ] Parallel waves
 - [ ] Repair loop integration

@@ -20,6 +20,7 @@ from self_build.goal_chains import compact_next, compact_status, create_minimal_
 from self_build.goals import GoalSpec  # noqa: E402
 from self_build.patch_queue import create_patch_placeholder  # noqa: E402
 from self_build.receipts import update_receipt, write_receipt  # noqa: E402
+from self_build.results import success_result  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -46,7 +47,7 @@ def main(argv: list[str] | None = None) -> int:
 
     receipt_update = subparsers.add_parser("goal-receipt-update")
     receipt_update.add_argument("--goal-dir", required=True)
-    receipt_update.add_argument("--status", choices=["complete", "blocked"])
+    receipt_update.add_argument("--status", choices=["complete", "blocked", "pending"])
     receipt_update.add_argument("--tests-result", choices=["passed", "failed", "not_run"])
     receipt_update.add_argument("--command", action="append", default=[], dest="receipt_commands")
     receipt_update.add_argument("--changed-file", action="append", default=[])
@@ -126,6 +127,7 @@ def main(argv: list[str] | None = None) -> int:
             blockers=args.blocker,
             next_action=args.next_action,
         )
+        success_result("receipt updated", artifacts=[str(receipt_path.relative_to(REPO_ROOT))])
         print(receipt_path.relative_to(REPO_ROOT))
         return 0
 
@@ -146,16 +148,21 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.command == "goal-chain-status":
-        print(compact_status(_resolve(args.chain_file)))
+        output = compact_status(_resolve(args.chain_file))
+        success_result("chain status refreshed")
+        print(output)
         return 0
 
     if args.command == "goal-chain-refresh":
         chain_dir = refresh_chain(_resolve(args.chain_file))
+        success_result("chain refreshed", artifacts=[str(chain_dir.relative_to(REPO_ROOT))])
         print(chain_dir.relative_to(REPO_ROOT))
         return 0
 
     if args.command == "goal-chain-next":
-        print(compact_next(_resolve(args.chain_file)))
+        output = compact_next(_resolve(args.chain_file))
+        success_result("next chain goal selected")
+        print(output)
         return 0
 
     parser.error(f"unsupported command: {args.command}")

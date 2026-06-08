@@ -1,0 +1,60 @@
+{
+  "blocked_count": 0,
+  "blockers": [],
+  "chain_id": "demo-demo-progress-chain-91f0890f",
+  "complete_count": 1,
+  "execution_mode": "sequential",
+  "goal_count": 3,
+  "goals": [
+    {
+      "blocker": "none",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/audit_current_state/context_pack.md",
+      "depends_on": [],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/audit_current_state",
+      "goal_id": "audit_current_state",
+      "objective": "Audit current state for: Show progress through a chain",
+      "receipt": "complete",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/audit_current_state/receipt.json",
+      "title": "Audit current state"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/implement_small_change/context_pack.md",
+      "depends_on": [
+        "audit_current_state"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/implement_small_change",
+      "goal_id": "implement_small_change",
+      "objective": "Implement one bounded change for: Show progress through a chain",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/implement_small_change/receipt.json",
+      "title": "Implement small change"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/context_pack.md",
+      "depends_on": [
+        "implement_small_change"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt",
+      "goal_id": "validate_and_receipt",
+      "objective": "Validate and write proof for: Show progress through a chain",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/receipt.json",
+      "title": "Validate and receipt"
+    }
+  ],
+  "next_incomplete": {
+    "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/implement_small_change/context_pack.md",
+    "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/implement_small_change",
+    "goal_id": "implement_small_change",
+    "objective": "Implement one bounded change for: Show progress through a chain",
+    "receipt": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/implement_small_change/receipt.json",
+    "title": "Implement small change"
+  },
+  "next_incomplete_goal": "implement_small_change",
+  "pending_count": 2,
+  "title": "Demo progress chain",
+  "updated_at": "2026-06-08T01:11:13Z",
+  "worker_launch": "disabled"
+}

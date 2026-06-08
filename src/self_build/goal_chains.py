@@ -282,7 +282,7 @@ def write_chain_status(chain_dir: str | Path) -> Path:
             blocker_list = [str(item) for item in blocker_items if str(item).strip()] if isinstance(blocker_items, list) else []
             blocker = "; ".join(blocker_list) if blocker_list else blocker_classification
             explicit_status = receipt.get("status")
-            if explicit_status in {"complete", "blocked"}:
+            if explicit_status in {"complete", "blocked", "pending"}:
                 receipt_status = str(explicit_status)
             elif blocker_classification == "blocked" or blocker_list:
                 receipt_status = "blocked"

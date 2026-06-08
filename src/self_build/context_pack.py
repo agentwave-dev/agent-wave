@@ -8,6 +8,7 @@ from typing import Any
 
 from .codelanes import Lane
 from .goals import GoalSpec
+from .session_contract import build_session_contract
 
 
 def write_context_pack(
@@ -91,6 +92,14 @@ def write_runner_manifest(
         "max_repair_attempts": goal.max_repair_attempts,
         "next_action": "review context pack before launching any future worker",
     }
+    manifest["session_contract"] = build_session_contract(
+        goal,
+        lane,
+        mode="worker",
+        root=root,
+        output_dir=out_dir,
+        context_pack_path=context_pack_path,
+    ).to_dict()
     out_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return out_path
 

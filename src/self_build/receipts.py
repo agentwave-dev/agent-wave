@@ -98,8 +98,8 @@ def update_receipt(
     blockers: list[str] | None = None,
     next_action: str | None = None,
 ) -> Path:
-    if status is not None and status not in {"complete", "blocked"}:
-        raise ValueError("status must be complete or blocked")
+    if status is not None and status not in {"complete", "blocked", "pending"}:
+        raise ValueError("status must be complete, blocked, or pending")
     if tests_result is not None and tests_result not in {"passed", "failed", "not_run"}:
         raise ValueError("tests_result must be passed, failed, or not_run")
 
@@ -110,7 +110,12 @@ def update_receipt(
 
     if status is not None:
         data["status"] = status
-        data["blocker_classification"] = "none" if status == "complete" else "blocked"
+        if status == "complete":
+            data["blocker_classification"] = "none"
+        elif status == "blocked":
+            data["blocker_classification"] = "blocked"
+        else:
+            data["blocker_classification"] = "pending"
     if tests_result is not None:
         data["tests_build_result"] = tests_result
     elif status == "complete" and "tests_build_result" not in data:

@@ -115,6 +115,16 @@ scripts/codelanes goal-chain-status --chain-file runs/build_chains/demo-demo-cha
 
 Goal Chain progress is receipt-driven. The MVP records and refreshes child progress, but it does not launch workers, apply patches, or merge branches.
 
+## Builder Harness Contracts
+
+The builder harness now has three small contracts for supervised progress:
+
+- Goal Chain Progress: child receipts drive chain status, completion rollups, and next-goal selection.
+- Session Contract: `runner_manifest.json` includes the mode, lane, branch, tool boundary, context budget, and artifact paths a future launcher must honor.
+- CommandResult: commands can return compact observations with artifact paths and next actions instead of raw log dumps.
+
+The bounded repair loop is documented as a scaffold only. Repair execution, worker launch, swarms, autonomous patch application, and complex scheduling remain out of scope.
+
 ## Safety Model
 
 CodeLanes is built for supervised automation, not autonomous branch integration.
@@ -164,6 +174,9 @@ See [docs/roadmap/goals.md](docs/roadmap/goals.md) for details.
 - [Bounded Healing Loop](docs/concepts/bounded-healing-loop.md)
 - [Goal Chain Waves](docs/concepts/goal-chain-waves.md)
 - [Autobrowse Proof](docs/concepts/autobrowse-proof.md)
+- [Builder Session Contract](docs/build_harness/session_contract.md)
+- [Builder CommandResult](docs/build_harness/command_results.md)
+- [Builder Bounded Repair Loop](docs/build_harness/bounded_repair_loop.md)
 
 ## Contributing
 

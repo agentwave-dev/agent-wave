@@ -1,0 +1,36 @@
+{
+  "acceptance_criteria": [
+    "Configured tests pass or blockers are documented.",
+    "Receipts identify next action."
+  ],
+  "allowed_paths": [
+    "examples/fake-app",
+    "runs/build",
+    "reports/completions"
+  ],
+  "created_at": "2026-06-08T01:10:46Z",
+  "forbidden_paths": [
+    ".env",
+    "secrets",
+    "private",
+    "runtime/production"
+  ],
+  "goal_id": "validate_and_receipt",
+  "lane": "demo",
+  "max_repair_attempts": 1,
+  "objective": "Validate and write proof for: Show progress through a chain",
+  "proof_required": [
+    "context_pack.md",
+    "receipt.json",
+    "chain_completion.md"
+  ],
+  "runtime_commands": [],
+  "stop_conditions": [
+    "Validation fails without a documented blocker.",
+    "Receipt proof is missing."
+  ],
+  "test_commands": [
+    "python -m pytest examples/fake-app/tests"
+  ],
+  "workflow": "validation"
+}

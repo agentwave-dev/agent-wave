@@ -1,0 +1,41 @@
+{
+  "context_pack_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/context_pack.md",
+  "expected_branch": "main",
+  "goal_id": "validate_and_receipt",
+  "lane": "demo",
+  "max_repair_attempts": 1,
+  "mode": "dry-run",
+  "next_action": "review context pack before launching any future worker",
+  "session_contract": {
+    "allowed_tools": [
+      "read_files",
+      "run_tests",
+      "apply_patch"
+    ],
+    "approval_policy": "operator-required",
+    "branch": "main",
+    "context_budget": 12000,
+    "context_pack_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/context_pack.md",
+    "cwd": "/repo",
+    "done_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/runner.done",
+    "goal_file": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/goal.json",
+    "hidden_tools": [],
+    "lane": "demo",
+    "loaded_skills": [],
+    "log_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/runner.log",
+    "max_log_bytes": 20000,
+    "max_turns": 20,
+    "mode": "worker",
+    "model": "operator-selected",
+    "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/receipt.json",
+    "resume_from": null,
+    "run_file": "/home/joe/public-repos/codelanes/runs/build_chains/demo-demo-progress-chain-91f0890f/goals/validate_and_receipt/runner_manifest.json"
+  },
+  "source_root": "/repo",
+  "test_commands": [
+    "python -m pytest examples/fake-app/tests"
+  ],
+  "tmux_session": "codelanes-demo",
+  "worker_launch": "disabled",
+  "workflow": "validation"
+}

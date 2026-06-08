@@ -164,6 +164,28 @@ def test_blocked_child_appears_in_blocker_summary(tmp_path):
     assert "blockers: audit_current_state: Need human review" in result.stdout
 
 
+def test_goal_receipt_update_can_mark_child_pending(tmp_path):
+    chain_dir = _materialize_chain(tmp_path)
+    goal_dir = chain_dir / "goals" / "audit_current_state"
+    _run_cli(
+        tmp_path,
+        "goal-receipt-update",
+        "--goal-dir",
+        str(goal_dir),
+        "--status",
+        "pending",
+        "--next-action",
+        "Continue manual work",
+    )
+    result = _run_cli(tmp_path, "goal-chain-status", "--chain-file", str(chain_dir))
+    receipt = json.loads((goal_dir / "receipt.json").read_text(encoding="utf-8"))
+
+    assert receipt["status"] == "pending"
+    assert receipt["blocker_classification"] == "pending"
+    assert "pending: 3" in result.stdout
+    assert "next incomplete goal: audit_current_state" in result.stdout
+
+
 def test_all_complete_chain_next_reports_complete(tmp_path):
     chain_dir = _materialize_chain(tmp_path)
     for goal_id in ["audit_current_state", "implement_small_change", "validate_and_receipt"]:

@@ -62,6 +62,12 @@ scripts/codelanes goal-chain-status --chain-file runs/build_chains/demo-demo-cha
 
 The MVP still has no worker launch integration. Child goals are completed manually, then receipts are updated explicitly.
 
+## Progress Commands
+
+`goal-receipt-update` preserves existing receipt fields while appending compact progress evidence. It accepts `complete`, `blocked`, and `pending` statuses; validation results are `passed`, `failed`, or `not_run`. If a child is marked complete without a validation result, the receipt records `not_run`.
+
+`goal-chain-refresh` re-reads every child `receipt.json`, updates status counts, records the next incomplete child, and writes both rollup artifacts. `goal-chain-next` prints only the next incomplete child goal and its artifact paths. `goal-chain-status` prints the same compact rollup for operators.
+
 ## When To Use A Goal Chain
 
 Use a Goal Chain when one objective is too large for a single GoalSpec but still has a clear sequential path. Good fits include:
