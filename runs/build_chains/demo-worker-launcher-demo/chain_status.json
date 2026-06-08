@@ -1,0 +1,60 @@
+{
+  "blocked_count": 0,
+  "blockers": [],
+  "chain_id": "demo-worker-launcher-demo",
+  "complete_count": 0,
+  "execution_mode": "sequential",
+  "goal_count": 3,
+  "goals": [
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/audit_current_state/context_pack.md",
+      "depends_on": [],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/audit_current_state",
+      "goal_id": "audit_current_state",
+      "objective": "Audit current state for: Run one supervised fake-app goal",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/audit_current_state/receipt.json",
+      "title": "Audit current state"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/implement_small_change/context_pack.md",
+      "depends_on": [
+        "audit_current_state"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/implement_small_change",
+      "goal_id": "implement_small_change",
+      "objective": "Implement one bounded change for: Run one supervised fake-app goal",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/implement_small_change/receipt.json",
+      "title": "Implement small change"
+    },
+    {
+      "blocker": "pending",
+      "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/validate_and_receipt/context_pack.md",
+      "depends_on": [
+        "implement_small_change"
+      ],
+      "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/validate_and_receipt",
+      "goal_id": "validate_and_receipt",
+      "objective": "Validate and write proof for: Run one supervised fake-app goal",
+      "receipt": "pending",
+      "receipt_path": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/validate_and_receipt/receipt.json",
+      "title": "Validate and receipt"
+    }
+  ],
+  "next_incomplete": {
+    "context_pack": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/audit_current_state/context_pack.md",
+    "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/audit_current_state",
+    "goal_id": "audit_current_state",
+    "objective": "Audit current state for: Run one supervised fake-app goal",
+    "receipt": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/audit_current_state/receipt.json",
+    "title": "Audit current state"
+  },
+  "next_incomplete_goal": "audit_current_state",
+  "pending_count": 3,
+  "title": "Worker launcher demo",
+  "updated_at": "2026-06-08T02:28:20Z",
+  "worker_launch": "disabled"
+}

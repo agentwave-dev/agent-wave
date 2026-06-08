@@ -21,6 +21,7 @@ from self_build.goals import GoalSpec  # noqa: E402
 from self_build.patch_queue import create_patch_placeholder  # noqa: E402
 from self_build.receipts import update_receipt, write_receipt  # noqa: E402
 from self_build.results import success_result  # noqa: E402
+from self_build.worker import collect_worker_result, create_worker_run_manifest, launch_worker, peek_worker  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -70,6 +71,19 @@ def main(argv: list[str] | None = None) -> int:
 
     chain_next = subparsers.add_parser("goal-chain-next")
     chain_next.add_argument("--chain-file", required=True)
+
+    worker_plan = subparsers.add_parser("worker-plan")
+    worker_plan.add_argument("--goal-dir", required=True)
+
+    worker_run = subparsers.add_parser("worker-run")
+    worker_run.add_argument("--goal-dir", required=True)
+    worker_run.add_argument("--execute", action="store_true")
+
+    worker_peek = subparsers.add_parser("worker-peek")
+    worker_peek.add_argument("--goal-dir", required=True)
+
+    worker_collect = subparsers.add_parser("worker-collect")
+    worker_collect.add_argument("--goal-dir", required=True)
 
     args = parser.parse_args(argv)
 
@@ -165,6 +179,31 @@ def main(argv: list[str] | None = None) -> int:
         print(output)
         return 0
 
+    if args.command == "worker-plan":
+        path = create_worker_run_manifest(_resolve(args.goal_dir), execute=False)
+        result = success_result(
+            "worker plan prepared; Codex was not launched",
+            artifacts=[str(path.relative_to(REPO_ROOT))],
+            next_actions=["review worker_prompt.md, then use worker-run for dry-run or gated execution"],
+        )
+        _print_result(result)
+        return 0
+
+    if args.command == "worker-run":
+        result = launch_worker(_resolve(args.goal_dir), execute=args.execute)
+        _print_result(result)
+        return 0 if result.success else 1
+
+    if args.command == "worker-peek":
+        result = peek_worker(_resolve(args.goal_dir))
+        _print_result(result)
+        return 0 if result.success else 1
+
+    if args.command == "worker-collect":
+        result = collect_worker_result(_resolve(args.goal_dir))
+        _print_result(result)
+        return 0 if result.success else 1
+
     parser.error(f"unsupported command: {args.command}")
     return 2
 
@@ -204,6 +243,10 @@ def _resolve(path: str) -> Path:
     if candidate.is_absolute():
         return candidate
     return REPO_ROOT / candidate
+
+
+def _print_result(result) -> None:
+    print(json.dumps(result.to_dict(), indent=2, sort_keys=True))
 
 
 if __name__ == "__main__":

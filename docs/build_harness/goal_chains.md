@@ -14,7 +14,7 @@ chain.yaml
 -> chain_completion.md
 ```
 
-The chain does not launch Codex workers, apply patches, merge branches, or retry repairs automatically. It only writes bounded artifacts that a human or future supervised runner can review.
+The chain does not apply patches, merge branches, launch swarms, or retry repairs automatically. A child goal can be handed to the supervised worker launcher, which defaults to dry-run artifacts and only launches one worker behind the explicit execution gate.
 
 ## Command Flow
 
@@ -60,7 +60,16 @@ Review compact chain status:
 scripts/codelanes goal-chain-status --chain-file runs/build_chains/demo-demo-chain
 ```
 
-The MVP still has no worker launch integration. Child goals are completed manually, then receipts are updated explicitly.
+Plan and dry-run one child worker:
+
+```bash
+scripts/codelanes worker-plan --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-run --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-peek --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-collect --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+```
+
+Execution requires both `--execute` and `CODELANES_ENABLE_WORKER_EXEC=1`. `worker-collect` updates `receipt.json` from the done marker and optional compact `completion.json`, then refreshes chain status when the child belongs to a chain.
 
 ## Progress Commands
 
@@ -105,14 +114,14 @@ Goal Chains preserve the existing Builder Harness safety model:
 - receipt stubs are required before work is treated as complete
 - blockers are surfaced in `chain_status.json`
 - `chain_completion.md` is a rollup, not a merge approval
+- worker status reports log paths and byte counts, not raw logs
 - human review and merge gates remain required
 
 ## Future Work
 
-Later versions can add parallel waves once the sequential receipt contract is stable. Future directions include:
+Later versions can add parallel waves once the sequential receipt and worker contracts are stable. Future directions include:
 
 - parallel wave grouping for independent child goals
-- integration mode for reviewed patch queues
+- integration apply mode for reviewed patch queues
 - repair loops with explicit attempt budgets
 - richer chain status validation
-- worker launch only after a human-approved runner contract exists

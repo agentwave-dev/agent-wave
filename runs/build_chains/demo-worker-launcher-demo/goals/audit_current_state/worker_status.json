@@ -1,0 +1,10 @@
+{
+  "active_process": false,
+  "completion_json": "missing",
+  "done_exit_code": null,
+  "done_present": false,
+  "log_path": "/tmp/audit_current_state_20260608T022757Z.log",
+  "log_size_bytes": 0,
+  "next_action": "worker has not produced a done marker; run worker-peek later",
+  "receipt_status": "pending"
+}

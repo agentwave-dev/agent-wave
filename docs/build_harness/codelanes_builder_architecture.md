@@ -38,7 +38,7 @@ The MVP flow is:
 
 1. `GoalSpec`: durable JSON goal record containing lane, workflow, objective, path boundaries, acceptance criteria, commands, proof requirements, and stop conditions.
 2. `ContextPack`: bounded markdown artifact written to `runs/build/<goal_id>/context_pack.md`. It summarizes the goal, lane, allowed paths, forbidden paths, acceptance criteria, tests, and receipt requirements.
-3. `RunnerManifest`: dry-run intent record for the future supervised runner. MVP v0 does not launch Codex workers; it records the exact context and lane metadata needed by a later runner.
+3. `RunnerManifest`: dry-run intent record for the supervised runner. Dry-run remains the default; a single Codex worker can be launched only when both the CLI `--execute` flag and `CODELANES_ENABLE_WORKER_EXEC=1` are present.
 4. `Receipt`: structured JSON artifact written to `runs/build/<goal_id>/receipt.json`. It records worktree, branch, changed files, tests run, exit codes, blocker classification, patch path, and next action.
 5. `PatchPlaceholder`: pending patch summary under `patches/pending/` when there is no diff or no patch should be applied yet.
 
@@ -66,25 +66,33 @@ Repair is documented but not executable in this milestone. The scaffold defines 
 
 See [bounded_repair_loop.md](bounded_repair_loop.md).
 
+## Supervised Worker Launcher
+
+The launcher prepares `worker_prompt.md`, `worker_run.json`, and `worker_status.json` for one child goal. `worker-plan` and default `worker-run` only write artifacts. Gated execution uses `/tmp/<task>_<timestamp>.run/.log/.done` markers, and `worker-peek` reports active process, done marker, log size, receipt status, and next action without printing raw logs.
+
+`worker-collect` reads the done marker, optional compact `completion.json`, and `receipt.json`. It updates receipt status, preserves the raw log path only, and refreshes the parent goal chain when the goal belongs to a chain.
+
+See [supervised_worker_launcher.md](supervised_worker_launcher.md).
+
 ## No-Swarm MVP Boundary
 
-MVP v0 does not launch Codex workers, create swarms, run detached agents, apply patches, or mutate production runtime data. It only creates durable input and output artifacts for one supervised build run:
+The MVP still does not create swarms, run parallel workers, apply patches, or mutate production runtime data. It creates durable input and output artifacts for one supervised build run:
 
 - lane registry loading
 - lane guard result
 - GoalSpec creation and validation
 - context pack creation
 - dry-run runner manifest creation
+- gated one-worker launcher artifacts
 - receipt initialization
 - patch placeholder creation
 - focused tests
 
 ## Future-State Roadmap
 
-1. Add runner supervision that consumes `RunnerManifest` and launches one worker with bounded context.
-2. Add receipt-driven repair loops capped by GoalSpec limits.
-3. Add patch queue review and integration gates.
-4. Add integration mode that can apply approved patches after safety scans.
-5. Add memory mode for durable lessons, state compaction, and cross-run continuity.
-6. Add multi-lane orchestration only after single-run receipts, repair, patch review, and integration gates are dependable.
-7. Add swarms last, as a coordination layer over stable lanes rather than as the core build mechanism.
+1. Add receipt-driven repair loops capped by GoalSpec limits.
+2. Add patch queue review and integration gates.
+3. Add integration mode that can apply approved patches after safety scans.
+4. Add memory mode for durable lessons, state compaction, and cross-run continuity.
+5. Add multi-lane orchestration only after single-run receipts, repair, patch review, and integration gates are dependable.
+6. Add swarms last, as a coordination layer over stable lanes rather than as the core build mechanism.

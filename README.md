@@ -102,7 +102,7 @@ scripts/wave milestone
 
 ## Goal Chains
 
-Goal Chains split one larger objective into ordered child GoalSpecs, then materialize child `goal.json`, `context_pack.md`, `receipt.json`, `chain_status.json`, and `chain_completion.md` artifacts. The MVP is sequential and does not launch workers or apply patches.
+Goal Chains split one larger objective into ordered child GoalSpecs, then materialize child `goal.json`, `context_pack.md`, `receipt.json`, `chain_status.json`, and `chain_completion.md` artifacts. The MVP is sequential and does not apply patches or launch swarms.
 
 ```bash
 scripts/codelanes goal-chain-init --lane demo --title "Demo chain" --objective "Make one small validated fake-app improvement"
@@ -113,7 +113,16 @@ scripts/codelanes goal-chain-refresh --chain-file runs/build_chains/demo-demo-ch
 scripts/codelanes goal-chain-status --chain-file runs/build_chains/demo-demo-chain
 ```
 
-Goal Chain progress is receipt-driven. The MVP records and refreshes child progress, but it does not launch workers, apply patches, or merge branches.
+Plan, dry-run, peek, and collect one supervised child worker:
+
+```bash
+scripts/codelanes worker-plan --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-run --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-peek --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-collect --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+```
+
+Real worker execution requires both `--execute` and `CODELANES_ENABLE_WORKER_EXEC=1`. Worker status reports marker files, receipt state, and log size only; it does not dump raw logs.
 
 ## Builder Harness Contracts
 
@@ -122,8 +131,9 @@ The builder harness now has three small contracts for supervised progress:
 - Goal Chain Progress: child receipts drive chain status, completion rollups, and next-goal selection.
 - Session Contract: `runner_manifest.json` includes the mode, lane, branch, tool boundary, context budget, and artifact paths a future launcher must honor.
 - CommandResult: commands can return compact observations with artifact paths and next actions instead of raw log dumps.
+- Supervised Worker Launcher: one child goal can prepare a prompt, dry-run a manifest, launch behind a two-part execution gate, peek compact status, collect receipt state, and refresh its parent chain.
 
-The bounded repair loop is documented as a scaffold only. Repair execution, worker launch, swarms, autonomous patch application, and complex scheduling remain out of scope.
+The bounded repair loop is documented as a scaffold only. Repair execution, swarms, autonomous patch application, integration apply mode, and complex scheduling remain out of scope.
 
 ## Safety Model
 
@@ -177,6 +187,7 @@ See [docs/roadmap/goals.md](docs/roadmap/goals.md) for details.
 - [Builder Session Contract](docs/build_harness/session_contract.md)
 - [Builder CommandResult](docs/build_harness/command_results.md)
 - [Builder Bounded Repair Loop](docs/build_harness/bounded_repair_loop.md)
+- [Builder Supervised Worker Launcher](docs/build_harness/supervised_worker_launcher.md)
 
 ## Contributing
 

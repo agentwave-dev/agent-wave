@@ -84,7 +84,8 @@ CodeLanes is organized around small public primitives that can be composed into 
 - [x] Session contract embedded in runner manifests
 - [x] Structured CommandResult helper contract
 - [x] Bounded repair loop docs scaffold
-- [ ] Worker launch integration
+- [x] Supervised worker launcher dry-run plan/run/peek/collect
+- [x] Two-part worker execution gate
 - [ ] Parallel waves
 - [ ] Repair loop integration
 
@@ -96,9 +97,13 @@ scripts/codelanes goal-chain-materialize --chain-file runs/build_chains/demo-dem
 scripts/codelanes goal-receipt-update --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state --status complete --tests-result passed --command "python -m pytest examples/fake-app/tests" --next-action "Proceed to next child goal"
 scripts/codelanes goal-chain-refresh --chain-file runs/build_chains/demo-demo-chain
 scripts/codelanes goal-chain-next --chain-file runs/build_chains/demo-demo-chain
+scripts/codelanes worker-plan --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-run --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-peek --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
+scripts/codelanes worker-collect --goal-dir runs/build_chains/demo-demo-chain/goals/audit_current_state
 ```
 
-Current limitation: no worker launch integration yet. A human or supervised future runner must complete each child goal and update its receipt.
+Current limitation: worker launch is single-goal and supervised. Dry-run is default, execution requires `--execute` plus `CODELANES_ENABLE_WORKER_EXEC=1`, and patch application, integration apply mode, repair execution, parallel workers, and swarms remain out of scope.
 
 ## v0.7 Trace Graph
 

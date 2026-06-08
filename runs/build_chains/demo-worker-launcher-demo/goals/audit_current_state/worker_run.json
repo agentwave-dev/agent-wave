@@ -1,0 +1,14 @@
+{
+  "command": [],
+  "done": "/tmp/audit_current_state_20260608T022757Z.done",
+  "execute": false,
+  "goal_dir": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/audit_current_state",
+  "log": "/tmp/audit_current_state_20260608T022757Z.log",
+  "next_action": "review worker_prompt.md, then rerun with --execute and CODELANES_ENABLE_WORKER_EXEC=1 if approved",
+  "prompt": "/home/joe/public-repos/codelanes/runs/build_chains/demo-worker-launcher-demo/goals/audit_current_state/worker_prompt.md",
+  "root": "/home/joe/public-repos/codelanes",
+  "run": "/tmp/audit_current_state_20260608T022757Z.run",
+  "started_at": "2026-06-08T02:27:57Z",
+  "status": "dry_run",
+  "task": "audit_current_state"
+}

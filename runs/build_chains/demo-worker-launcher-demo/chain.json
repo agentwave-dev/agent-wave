@@ -1,0 +1,118 @@
+{
+  "chain_id": "demo-worker-launcher-demo",
+  "created_at": "2026-06-08T02:27:35Z",
+  "default_workflow": "narrow_implementation",
+  "execution_mode": "sequential",
+  "goals": [
+    {
+      "acceptance_criteria": [
+        "Current behavior and constraints are identified."
+      ],
+      "allowed_paths": [
+        "examples/fake-app",
+        "runs/build",
+        "reports/completions"
+      ],
+      "depends_on": [],
+      "forbidden_paths": [
+        ".env",
+        "secrets",
+        "private",
+        "runtime/production"
+      ],
+      "goal_id": "audit_current_state",
+      "lane": "demo",
+      "objective": "Audit current state for: Run one supervised fake-app goal",
+      "proof_required": [
+        "context_pack.md",
+        "receipt.json"
+      ],
+      "stop_conditions": [
+        "Wrong worktree or branch.",
+        "Forbidden path or private data would be touched."
+      ],
+      "test_commands": [
+        "python -m pytest examples/fake-app/tests"
+      ],
+      "title": "Audit current state",
+      "workflow": "audit"
+    },
+    {
+      "acceptance_criteria": [
+        "The bounded change is implemented.",
+        "No patches are applied automatically by the chain."
+      ],
+      "allowed_paths": [
+        "examples/fake-app",
+        "runs/build",
+        "reports/completions"
+      ],
+      "depends_on": [
+        "audit_current_state"
+      ],
+      "forbidden_paths": [
+        ".env",
+        "secrets",
+        "private",
+        "runtime/production"
+      ],
+      "goal_id": "implement_small_change",
+      "lane": "demo",
+      "objective": "Implement one bounded change for: Run one supervised fake-app goal",
+      "proof_required": [
+        "context_pack.md",
+        "receipt.json"
+      ],
+      "stop_conditions": [
+        "Dependency receipt has a blocker.",
+        "Forbidden path or private data would be touched."
+      ],
+      "test_commands": [
+        "python -m pytest examples/fake-app/tests"
+      ],
+      "title": "Implement small change",
+      "workflow": "narrow_implementation"
+    },
+    {
+      "acceptance_criteria": [
+        "Configured tests pass or blockers are documented.",
+        "Receipts identify next action."
+      ],
+      "allowed_paths": [
+        "examples/fake-app",
+        "runs/build",
+        "reports/completions"
+      ],
+      "depends_on": [
+        "implement_small_change"
+      ],
+      "forbidden_paths": [
+        ".env",
+        "secrets",
+        "private",
+        "runtime/production"
+      ],
+      "goal_id": "validate_and_receipt",
+      "lane": "demo",
+      "objective": "Validate and write proof for: Run one supervised fake-app goal",
+      "proof_required": [
+        "context_pack.md",
+        "receipt.json",
+        "chain_completion.md"
+      ],
+      "stop_conditions": [
+        "Validation fails without a documented blocker.",
+        "Receipt proof is missing."
+      ],
+      "test_commands": [
+        "python -m pytest examples/fake-app/tests"
+      ],
+      "title": "Validate and receipt",
+      "workflow": "validation"
+    }
+  ],
+  "lane": "demo",
+  "objective": "Run one supervised fake-app goal",
+  "title": "Worker launcher demo",
+  "worker_launch": "disabled"
+}
